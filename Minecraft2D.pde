@@ -9,16 +9,21 @@ void setup(){
   player = new Player();
   isPressed = new boolean[5];
 }
+
 void draw(){
   background(135,206,235);
   world.display();
   player.display();
-  
-  if (isPressed[0]) {
-    player.moveX(-0.1);
-  } else if (isPressed[1]) {
-    player.moveX(0.1);
-  }
+  if(!(isPressed[0] && isPressed[1])){
+    if (isPressed[0]) {
+      player.moveX(-0.2);
+    }
+    else if (isPressed[1]) {
+      player.moveX(0.2);
+    }
+  } 
+
+  player.run();
 }
 
 void keyPressed() {

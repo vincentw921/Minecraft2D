@@ -11,21 +11,19 @@ class Player {
   public Player() {
     this.pos = new PVector(width / 2, height / 2);
     this.vel = new PVector();
-    img = loadImage("player.png");
+    img = loadImage("images/player.png");
   }
   
-  public void moveX(int xacc) {
+  public void moveX(float xacc) {
     vel.add(xacc,0);
     vel.x = min(MAXVEL,vel.x);
-    
-    world.screenPos.add(vel);
     vel.mult(FRICTION);
-    vel.add(GRAVITY);
+    world.screenPos.add(vel);
   }
   
   public void display() {
     int w = 50;
-    int h = 100;
+    int h = 150;
     image(img, pos.x - w / 2, pos.y - h / 2, w, h);
   }
 }

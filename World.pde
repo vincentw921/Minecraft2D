@@ -12,7 +12,7 @@ class World {
   Biome[] biome;
 
   public World() {
-    this.screenPos = new PVector(width / 2, 120 + height / 2 / 50);
+    this.screenPos = new PVector(WORLD_WIDTH / 2, 119);
     this.blocks = new Block[WORLD_WIDTH][WORLD_HEIGHT];
     int loc = 0;
     biome = new Biome[WORLD_WIDTH];
@@ -32,22 +32,25 @@ class World {
     }
     for (int i = 0; i < biome.length; i++) {
       if (biome[i] == Biome.TREES) {
-        if (random(1) > 0.7) {
+        if (random(1) > 0.3) {
           continue;
         }
         for (int h = 0; h < random(3,8); h++) {
-          blocks[i][h] = new Block(Blocks.TREE);
+          blocks[i][119 - h] = new Block(Blocks.TREE);
         }
       }
     }
   }
   
   public void display() {
-    float ox = screenPos.x;
-    float oy = screenPos.y;
-    for (int i = floor(ox) / 50; i < floor(ox) + 1 + width / SIZE; i++) {
-      for (int j = floor(oy) / 50; j < floor(oy) + 1 + height / SIZE; j++) {
-        blocks[i][j].display(i,j);
+    int ox = (int)(screenPos.x);
+    int oy = (int)(screenPos.y);
+    for (int i = 0; i < width / SIZE + 1; i++) {
+      for (int j = 0; j < height / SIZE + 1; j++) {
+        if (blocks[ox + i][oy + j] == null) {
+          continue;
+        }
+        blocks[ox + i][oy + j].display(i,j);
       }
     }
   }
@@ -55,7 +58,7 @@ class World {
   private Block generateBlock(int h, int w) {
     if (h < 120) {
       return null;
-    } else if (h >= 120 && h <= 130 && biome[w] == Biome.GRASS) {
+    } else if (h >= 120 && h <= 130 && (biome[w] == Biome.GRASS || biome[w] == Biome.TREES)) {
       if (h == 120) {
         return new Block(Blocks.GRASS);
       } else {

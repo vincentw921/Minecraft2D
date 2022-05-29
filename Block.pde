@@ -49,7 +49,21 @@ class Block {
   }
 
   public boolean hit() {
-    return true;
+    return isHit() && closeToPlayer();
+  }
+  
+  private boolean closeToPlayer() {
+    float px = player.pos.x;
+    float py = player.pos.y;
+    float pw = player.WIDTH;
+    float ph = player.HEIGHT;
+    
+    float bx = this.x;
+    float by = this.y;
+    float size = SIZE;
+    
+    return px < bx + SIZE && px + pw > bx
+          || py < by + SIZE && py + ph > by;
   }
   private boolean isHit() {
     return mouseX > x && mouseX < x + SIZE

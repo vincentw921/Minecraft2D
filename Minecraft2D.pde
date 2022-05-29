@@ -1,5 +1,6 @@
 World world;
 Player player;
+Inventory inventory;
 
 boolean[] isPressed;
 
@@ -7,6 +8,7 @@ void setup(){
   size(1000, 1000);
   world = new World();
   player = new Player();
+  inventory = new Inventory();
   isPressed = new boolean[5];
 }
 
@@ -21,7 +23,10 @@ void draw(){
     else if (isPressed[1]) {
       player.moveX(0.01);
     }
-  } 
+  }
+  if (isPressed[2]) {
+    inventory.display();
+  }
 
   player.run();
 }
@@ -33,9 +38,14 @@ void keyPressed() {
   if (key == 'd') {
     isPressed[1] = true;
   }
+  if (key == ' ') {
+    world.screenPos.y = world.screenPos.y - 1;
+  }
   if (key == 's') {
-    println("SUCK PENIS");
     world.screenPos.y = world.screenPos.y + 1;
+  }
+  if (key == 'e') {
+    isPressed[2] = !isPressed[2];
   }
 }
 

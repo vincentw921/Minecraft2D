@@ -28,8 +28,8 @@ class Inventory {
     strokeWeight(3);
     int cellWidth = (rightX - leftX) / (cols + 1);
     int cellHeight = (bottomY - topY) / (rows + 1);
-    for(int r = 1; r < rows; r++){
-      for(int c = 1; c < cols; c++){
+    for(int r = 1; r < rows + 1; r++){
+      for(int c = 1; c < cols + 1; c++){
         //vertical line
         line(leftX + c * cellWidth, topY, leftX + c * cellWidth, bottomY);
         //horizontal line

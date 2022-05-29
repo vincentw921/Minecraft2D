@@ -25,13 +25,21 @@ final int SIZE = 50;
 class Block {
   color c;
   float health;
+  
+  float x, y;
 
   public Block(Blocks btype) {
     this.c = color(btype.col[0], btype.col[1], btype.col[2]);
     this.health = btype.health;
+    this.x = 0;
+    this.y = 0;
   }
 
   public void display(float x, float y) {
+    this.x = x;
+    this.y = y;
+    stroke(0);
+    strokeWeight(1);
     fill(c);
     square(x * SIZE, y * SIZE, SIZE);
   }
@@ -40,14 +48,11 @@ class Block {
       && othery > y && othery < y + SIZE;
   }
 
-  public boolean touching(float x, float y, float otherx, float othery, float othervelx, float othervely) {
-    float ox  = otherx + othervelx;
-    float oy = othery + othervely;
-    return touching(x, y, ox, oy) || touching(x, y, otherx, othery);
+  public boolean hit() {
+    return true;
   }
-
-  public void hit() {
-  }
-  private void isHit() {
+  private boolean isHit() {
+    return mouseX > x && mouseX < x + SIZE
+            && mouseY > y && mouseY < y + SIZE;
   }
 }

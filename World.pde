@@ -20,9 +20,15 @@ class World {
         continue;
       }
       prevTree = 3;
-      for (int h = 0; h < random(3, 8); h++) {
+      int maxH = (int)random(3, 8);
+      for (int h = 0; h < maxH; h++) {
         blocks[i][119 - h] = new Block(Blocks.TREE);
       }
+      blocks[i][119 - maxH] = new Block(Blocks.LEAVES);
+      blocks[i-1][119-maxH] = new Block(Blocks.LEAVES);
+      blocks[i+1][119-maxH] = new Block(Blocks.LEAVES);
+      blocks[i-1][119-maxH + 1] = new Block(Blocks.LEAVES);
+      blocks[i+1][119-maxH + 1] = new Block(Blocks.LEAVES);
     }
   }
 

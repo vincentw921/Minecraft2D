@@ -16,10 +16,10 @@ void draw(){
   player.display();
   if(!(isPressed[0] && isPressed[1])){
     if (isPressed[0]) {
-      player.moveX(-0.2);
+      player.moveX(-0.01);
     }
     else if (isPressed[1]) {
-      player.moveX(0.2);
+      player.moveX(0.01);
     }
   } 
 
@@ -32,6 +32,10 @@ void keyPressed() {
   }
   if (key == 'd') {
     isPressed[1] = true;
+  }
+  if (key == 's') {
+    println("SUCK PENIS");
+    world.screenPos.y = world.screenPos.y + 1;
   }
 }
 

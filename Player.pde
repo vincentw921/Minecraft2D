@@ -1,7 +1,7 @@
 class Player {
   final float FRICTION = 0.8;
   final PVector GRAVITY = new PVector(0, -0.1);
-  final float MAX_HORIZONTAL_VEL = 5;
+  final float MAX_HORIZONTAL_VEL = 0.15;
   boolean moving;
 
   PVector vel;
@@ -10,7 +10,7 @@ class Player {
   PImage img;
 
   public Player() {
-    this.pos = new PVector(width / 2, height / 2);
+    this.pos = new PVector(width / 2 - 25, height / 2 + 25);
     this.vel = new PVector();
     img = loadImage("images/player.png");
     moving = false;
@@ -26,7 +26,7 @@ class Player {
     //vel.add(GRAVITY);
     vel.set(vel.x < 0 ? max(-MAX_HORIZONTAL_VEL, vel.x) : min(MAX_HORIZONTAL_VEL, vel.x), vel.y);
     if(!moving) vel.set(vel.x * FRICTION, vel.y);
-    pos.add(vel);
+    world.screenPos.add(vel);
     //println(vel.mag());
     moving = false;
   }

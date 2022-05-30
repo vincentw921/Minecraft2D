@@ -36,8 +36,8 @@ class Block {
   }
 
   public void display(float x, float y) {
-    this.x = x;
-    this.y = y;
+    this.x = x * SIZE;
+    this.y = y * SIZE;
     stroke(0);
     strokeWeight(1);
     fill(c);
@@ -48,11 +48,13 @@ class Block {
       && othery > y && othery < y + SIZE;
   }
 
-  public boolean hit() {
-    return isHit() && closeToPlayer();
+  public void hit() {
+    if (isHit()) {
+      this.health -= 50;
+    }
   }
   
-  private boolean closeToPlayer() {
+  public boolean hasGround() {
     float px = player.pos.x;
     float py = player.pos.y;
     float pw = player.WIDTH;
@@ -62,11 +64,11 @@ class Block {
     float by = this.y;
     float size = SIZE;
     
-    return px < bx + SIZE && px + pw > bx
-          || py < by + SIZE && py + ph > by;
+    return px + ph + 1 == bx;
   }
   private boolean isHit() {
-    return mouseX > x && mouseX < x + SIZE
+    boolean tmp = mouseX > x && mouseX < x + SIZE
             && mouseY > y && mouseY < y + SIZE;
+    return tmp;
   }
 }

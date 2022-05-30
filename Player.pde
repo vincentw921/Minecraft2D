@@ -1,6 +1,6 @@
 class Player {
   final float FRICTION = 0.8;
-  final PVector GRAVITY = new PVector(0, -0.1);
+  final PVector GRAVITY = new PVector(0, 0.1);
   final float MAX_HORIZONTAL_VEL = 0.15;
 
 
@@ -25,9 +25,15 @@ class Player {
     if ((xacc < 0 && vel.x > 0) || (xacc > 0 && vel.x < 0)) vel.set(vel.x * FRICTION, vel.y);
     moving = true;
   }
+  
+  public boolean hasGround() {
+    return world.blocks[(int)world.screenPos.x][14 + (int)world.screenPos.y] != null;
+  }
 
   public void run() {
-    //vel.add(GRAVITY);
+    if (!hasGround()) {
+      vel.add(GRAVITY);
+    }
     vel.set(vel.x < 0 ? max(-MAX_HORIZONTAL_VEL, vel.x) : min(MAX_HORIZONTAL_VEL, vel.x), vel.y);
     if (!moving) vel.set(vel.x * FRICTION, vel.y);
     world.screenPos.add(vel);
@@ -36,6 +42,6 @@ class Player {
   }
 
   public void display() {
-    image(img, pos.x - w / 2, pos.y - h / 2, w, h);
+    image(img, pos.x - WIDTH / 2, pos.y - HEIGHT / 2, WIDTH, HEIGHT);
   }
 }

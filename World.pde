@@ -46,7 +46,7 @@ class World {
       }
     }
   }
-  
+
   public void checkHit() {
     float ox = screenPos.x;
     float oy = screenPos.y;
@@ -58,6 +58,18 @@ class World {
         blocks[(int)ox + i][(int)oy + j].hit();
         if (blocks[(int)ox + i][(int)oy + j].health <= 0) {
           blocks[(int)ox + i][(int)oy + j] = null;
+        }
+      }
+    }
+  }
+
+  public void checkGround() {
+    float ox = screenPos.x;
+    float oy = screenPos.y;
+    for (int i = 0; i < width / SIZE + 1; i++) {
+      for (int j = 0; j < height / SIZE + 1; j++) {
+        if (blocks[(int)ox + i][(int)oy + j] == null) {
+          continue;
         }
       }
     }

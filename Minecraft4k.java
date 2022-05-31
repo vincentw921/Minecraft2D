@@ -92,8 +92,8 @@ public class Minecraft4k
   static long deltaTime = 0;
   static Font font = Font.getFont("Arial");
   static java.awt.Cursor hiddenCursor;
-
-  public static void main(String[] args) {
+  @SuppressWarnings("unchecked")
+    public static void main(String[] args) {
     frame = new JFrame("Minecraft4k");
     Minecraft4k m4k = new Minecraft4k();
 

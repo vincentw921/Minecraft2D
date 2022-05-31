@@ -10,6 +10,7 @@ void setup(){
   world = new World();
   player = new Player();
   inventory = new Inventory();
+  
   isPressed = new boolean[5];
   mouse = new boolean[2];
 }
@@ -19,10 +20,10 @@ void draw(){
   world.display();
   player.display();
   if(!(isPressed[0] && isPressed[1])){
-    if (isPressed[0]) {
+    if (isPressed[0] && player.hasLeft()) {
       player.moveX(-0.01);
     }
-    else if (isPressed[1]) {
+    else if (isPressed[1] && player.hasRight()) {
       player.moveX(0.01);
     }
   } if (isPressed[2]) {
@@ -44,7 +45,10 @@ void keyPressed() {
     isPressed[1] = true;
   }
   if (key == ' ') {
-    world.screenPos.y = world.screenPos.y - 1;
+    if (!player.hasGround()) {
+      return;
+    }
+    player.vel.add(0,-0.2);
   }
   if (key == 'e') {
     isPressed[2] = !isPressed[2];

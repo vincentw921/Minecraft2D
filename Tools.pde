@@ -29,18 +29,24 @@ public enum Type {
 
 class Tool {
   final int IMAGE_SIZE = 50;
-  PVector pos;
+  final PVector pos = new PVector(width / 2, height / 2 + 25 + 75);;
   String name;
   
   int damage;
   int health;
   PImage image;
   public Tool(Tools tool, Type material) {
-    this.pos = new PVector(width / 2, height / 2 + 25 + 75);
     this.name = tool.name + material.name;
     this.image = loadImage(tool.name + material.name + ".png");
     this.health = material.health;
     this.damage = material.damage;
+  }
+  
+  public Tool(String img, int health, int damage) {
+    this.name = img;
+    this.image = loadImage(img);
+    this.damage = damage;
+    this.health = health;
   }
   
   public void display() {

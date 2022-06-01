@@ -4,25 +4,58 @@ Inventory inventory;
 
 String[] qwerty = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"};
 boolean worldLoaded;
-String saveAs = "text";
+String saveAs = "text.txt";
 
 boolean[] isPressed;
 boolean[] mouse;
 
 void setup() {
   size(1000, 1000);
+  File tmp = new File(saveAs);
   worldLoaded = false;
-  try {
-    Table t = new Table(new File(saveAs));
-    TableRow worldLocation = t.getRow(0);
+  if (!tmp.exists()) {
+    world = new World();
+    player = new Player();
+    inventory = new Inventory();
+    isPressed = new boolean[5];
+    mouse = new boolean[2];
+    return;
   }
-  catch(IOException i) {
-    println("File not found");
-  }
+  Table t = loadTable(saveAs);
   world = new World();
+  TableRow worldLocation = t.getRow(0);
+  world.screenPos.x = worldLocation.getFloat(0);
+  world.screenPos.y = worldLocation.getFloat(1);
   player = new Player();
-  inventory = new Inventory();
+  TableRow playerPos = t.getRow(1);
+  player.pos.x = playerPos.getFloat(0);
+  player.pos.y = playerPos.getFloat(1);
 
+  TableRow blocks = t.getRow(2);
+  TableRow blockHealths = t.getRow(3);
+  for (int i = 0; i < world.WORLD_WIDTH * world.WORLD_HEIGHT; i++) {
+    if (blocks.getInt(i) == -1) {
+      continue;
+    }
+    world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = new Block(blocks.getInt(i), blockHealths.getFloat(i));
+  }
+  inventory = new Inventory();
+  TableRow toolName = t.getRow(4);
+  TableRow damage = t.getRow(5);
+  TableRow health = t.getRow(6);
+  TableRow col = t.getRow(7);
+  TableRow amount = t.getRow(8);
+
+  for (int i = 0; i < inventory.rows * inventory.cols; i++) {
+    if (toolName.getString(i).equals("Inven Null")) {
+      continue;
+    }
+    if (col.getInt(i) == 0) {
+      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Tool(toolName.getString(i), health.getInt(i), damage.getInt(i)));
+    } else {
+      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Block(col.getInt(i), health.getFloat(i)), amount.getInt(i));
+    }
+  }
   isPressed = new boolean[5];
   mouse = new boolean[2];
 }
@@ -117,29 +150,35 @@ void exit() {
   table.addRow(new Float[] {player.pos.x, player.pos.y});
 
   Integer[] c = new Integer[world.blocks[0].length * world.blocks.length];
+  Float[] healths = new Float[world.blocks[0].length * world.blocks.length];
   for (int i = 0; i < world.blocks.length; i++) {
     for (int j = 0; j < world.blocks[0].length; j++) {
       if (world.blocks[i][j] == null) {
         c[i + j * world.blocks.length] = -1;
         continue;
       }
+      healths[i + j * world.blocks.length] = world.blocks[i][j].health;
       c[i + j * world.blocks.length] = world.blocks[i][j].c;
     }
   }
   table.addRow(c);
+  table.addRow(healths);
   String[] toolName = new String[inventory.inven.length * inventory.inven[0].length];
   Integer[] damage = new Integer[inventory.inven.length * inventory.inven[0].length];
   Float[] health = new Float[inventory.inven.length * inventory.inven[0].length];
   Integer[] col = new Integer[inventory.inven.length * inventory.inven[0].length];
+  Integer[] amount = new Integer[inventory.inven.length * inventory.inven[0].length];
 
   for (int i = 0; i < inventory.inven.length; i++) {
     for (int j = 0; j < inventory.inven[0].length; j++) {
       if (inventory.inven[i][j] == null) {
+        toolName[i + j * inventory.inven.length] = "Inven Null";
         continue;
       }
       if (inventory.inven[i][j].tool == null) {
         health[i + j * inventory.inven.length] = inventory.inven[i][j].block.health;
         col[i + j * inventory.inven.length] = inventory.inven[i][j].block.c;
+        amount[i + j * inventory.inven.length] = inventory.inven[i][j].amount;
         continue;
       }
       toolName[i + j * inventory.inven.length] = inventory.inven[i][j].tool.name;
@@ -151,6 +190,7 @@ void exit() {
   table.addRow(damage);
   table.addRow(health);
   table.addRow(col);
+  table.addRow(amount);
   saveTable(table, "saves/" + saveAs + ".csv");
   dispose();
 }

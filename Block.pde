@@ -37,6 +37,11 @@ class Block {
     this.x = 0;
     this.y = 0;
   }
+  
+  public Block(int c, float health) {
+    this.c = (color)c;
+    this.health = health;
+  }
 
   public void display(float x, float y) {
     this.x = x * SIZE;

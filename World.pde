@@ -10,7 +10,7 @@ class World {
 
     for (int i = 0; i < blocks.length; i++) {
       for (int j = 0; j < blocks[0].length; j++) {
-        blocks[i][j] = generateBlock(j, i);
+        blocks[i][j] = generateBlock(j);
       }
     }
     int prevTree = 3;
@@ -35,6 +35,15 @@ class World {
         blocks[i+1][119-maxH + 1] = new Block(Blocks.LEAVES);
       }
     }
+
+    for (int i = 0; i < blocks.length; i++) {
+      blocks[i][0] = new Block(Blocks.BEDROCK);
+      blocks[i][blocks[0].length - 1] = new Block(Blocks.BEDROCK);
+    }
+    for (int j = 0; j < blocks[0].length; j++) {
+      blocks[0][j] = new Block(Blocks.BEDROCK);
+      blocks[blocks.length - 1][j] = new Block(Blocks.BEDROCK);
+    }
   }
 
   public void display() {
@@ -42,6 +51,10 @@ class World {
     float oy = screenPos.y;
     for (int i = 0; i < width / SIZE + 1; i++) {
       for (int j = 0; j < height / SIZE + 1; j++) {
+        if ((int)ox + i >= blocks.length || (int)oy + j >= blocks[0].length
+          || (int)ox + i < 0 || (int)oy + j < 0) {
+          continue;
+        }
         if (blocks[(int)ox + i][(int)oy + j] == null) {
           continue;
         }
@@ -50,35 +63,21 @@ class World {
     }
   }
 
+
   public void checkHit() {
-    float ox = screenPos.x;
-    float oy = screenPos.y;
-    for (int i = 0; i < width / SIZE + 1; i++) {
-      for (int j = 0; j < height / SIZE + 1; j++) {
-        if (blocks[(int)ox + i][(int)oy + j] == null) {
-          continue;
-        }
-        blocks[(int)ox + i][(int)oy + j].hit();
-        if (blocks[(int)ox + i][(int)oy + j].health <= 0) {
-          blocks[(int)ox + i][(int)oy + j] = null;
-        }
-      }
+    int x = (int)mouseX / SIZE + (int)screenPos.x;
+    int y = (int)mouseY / SIZE + (int)screenPos.y;
+    if (x > blocks.length || x < 0 || y > blocks[0].length || y < 0 ||
+      blocks[x][y] == null) {
+      return;
+    }
+    blocks[x][y].hit();
+    if (blocks[x][y].health <= 0) {
+      blocks[x][y] = null;
     }
   }
-
-  public void checkGround() {
-    float ox = screenPos.x;
-    float oy = screenPos.y;
-    for (int i = 0; i < width / SIZE + 1; i++) {
-      for (int j = 0; j < height / SIZE + 1; j++) {
-        if (blocks[(int)ox + i][(int)oy + j] == null) {
-          continue;
-        }
-      }
-    }
-  }
-
-  private Block generateBlock(int h, int w) {
+  
+  private Block generateBlock(int h) {
     if (h < 120) {
       return null;
     } else if (h >= 120 && h <= 125) {

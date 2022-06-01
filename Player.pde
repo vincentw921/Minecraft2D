@@ -29,6 +29,9 @@ class Player {
   public boolean hasGround() {
     return world.blocks[(int)world.screenPos.x + width / 2 / SIZE][12 + (int)world.screenPos.y] != null;
   }
+  public boolean hasTopBlock() {
+    return world.blocks[(int)world.screenPos.x + width / 2 / SIZE][8 + (int)world.screenPos.y] != null;
+  }
   public boolean notHasLeft() {
     return world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y] == null 
           && world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][10 + (int)world.screenPos.y] == null
@@ -63,7 +66,7 @@ class Player {
     PVector start = new PVector(pos.x + WIDTH / 2, pos.y + HEIGHT / 2);
     end.sub(start);
     if (end.mag() > 2 * SIZE) {
-      end.mult(1 / end.mag() * 2 * SIZE);
+      end.mult(1 / end.mag() * 3.2 * SIZE);
     }
     end.add(start);
     strokeWeight(20);

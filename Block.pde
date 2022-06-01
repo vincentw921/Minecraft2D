@@ -10,7 +10,8 @@ public enum Blocks {
     IRON(new int[] {161, 157, 148}, 50),
     COAL(new int[] {43, 45, 47}, 50),
     GOLD(new int[] {212, 175, 55}, 50),
-    DIAMOND(new int[] {185, 242, 255}, 50), ;
+    DIAMOND(new int[] {185, 242, 255}, 50),
+    BEDROCK(new int[] {0,0,0}, 10000);
 
   int[] col;
   float health;
@@ -59,10 +60,36 @@ class Block {
   }
 
   public void hit() {
-    if (isHit()) {
+    if (btype == Blocks.BEDROCK) {
+      return;
+    }
+    if (isHit() && mouseClose()) {
       this.health -= 50;
     }
   }
+  
+  private boolean mouseClose() {
+    PVector end = new PVector(mouseX, mouseY);
+    PVector start = new PVector(player.pos.x + player.WIDTH / 2, player.pos.y + player.HEIGHT / 2);
+    end.sub(start);
+    boolean close = end.mag() < 3 * SIZE;
+    /*
+    end.mult(1 / end.mag() * SIZE * 0.9);
+    end.add(start);
+    if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
+      return false;
+    }
+    end.sub(start);
+    end.div(1 / end.mag() * SIZE * 0.9);
+    end.mult(1 / end.mag() * SIZE * 1.8);
+    end.add(start);
+    if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
+      return false;
+    }
+    */
+    return close;
+  }
+  
   private boolean isHit() {
     boolean tmp = mouseX > x && mouseX < x + SIZE
       && mouseY > y && mouseY < y + SIZE;

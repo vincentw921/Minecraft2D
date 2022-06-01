@@ -32,6 +32,9 @@ void draw() {
       player.vel.add(0, -0.2);
     }
   }
+  if (player.hasTopBlock()) {
+    player.vel.set(player.vel.x,0);
+  }
   if (isPressed[2]) {
     inventory.display();
   }
@@ -50,7 +53,7 @@ void keyPressed() {
   if (key == 'd') {
     isPressed[1] = true;
   }
-  if (key == ' ') {
+  if (key == 'w') {
     isPressed[3] = true;
   }
   if (key == 'e') {
@@ -65,7 +68,7 @@ void keyReleased() {
   if (key == 'd') {
     isPressed[1] = false;
   }
-  if (key == ' ') {
+  if (key == 'w') {
     isPressed[3] = false;
   }
 }

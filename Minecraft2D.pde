@@ -20,10 +20,10 @@ void draw(){
   world.display();
   player.display();
   if(!(isPressed[0] && isPressed[1])){
-    if (isPressed[0] && player.hasLeft()) {
+    if (isPressed[0] && player.notHasLeft()) {
       player.moveX(-0.01);
     }
-    else if (isPressed[1] && player.hasRight()) {
+    else if (isPressed[1] && player.notHasRight()) {
       player.moveX(0.01);
     }
   } if (isPressed[2]) {

@@ -1,5 +1,4 @@
 class Inventory {
-  // kelvin do ur handy work :D
   final int rows = 5;
   final int cols = 6;   
   final int invenWidth = width - 300;

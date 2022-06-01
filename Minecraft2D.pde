@@ -13,6 +13,9 @@ void setup(){
   
   isPressed = new boolean[5];
   mouse = new boolean[2];
+  
+  // load tool images
+  
 }
 
 void draw(){

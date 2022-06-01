@@ -23,12 +23,14 @@ public enum Blocks {
 final int SIZE = 50;
 
 class Block {
+  Blocks btype;
   color c;
   float health;
 
   float x, y;
 
   public Block(Blocks btype) {
+    this.btype = btype;
     this.c = color(btype.col[0], btype.col[1], btype.col[2]);
     this.health = btype.health;
     this.x = 0;
@@ -42,6 +44,14 @@ class Block {
     strokeWeight(1);
     fill(c);
     square(x * SIZE, y * SIZE, SIZE);
+  }
+  public void display(float x, float y, int size) {
+    this.x = x * size;
+    this.y = y * size;
+    stroke(0);
+    strokeWeight(1);
+    fill(c);
+    square(x * size, y * size, size);
   }
   public boolean touching(float x, float y, float otherx, float othery) {
     return otherx > x && otherx < x + SIZE

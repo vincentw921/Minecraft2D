@@ -15,6 +15,9 @@ class World {
     }
     int prevTree = 3;
     for (int i = 0; i < blocks.length; i++) {
+      if (i == WORLD_WIDTH / 2 - 1 || i == WORLD_WIDTH / 2 || i == WORLD_WIDTH / 2 + 1) {
+        continue;
+      }
       if (random(1) > 0.1 || prevTree > 0) {
         prevTree--;
         continue;

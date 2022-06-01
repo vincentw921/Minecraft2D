@@ -14,7 +14,7 @@ class Player {
   PImage img;
 
   public Player() {
-    this.pos = new PVector(width / 2, height / 2 + 25);
+    this.pos = new PVector(width / 2 - WIDTH / 2, height / 2 + 25 - HEIGHT / 2);
     this.vel = new PVector();
     img = loadImage("images/player.png");
     moving = false;
@@ -58,6 +58,16 @@ class Player {
   }
 
   public void display() {
-    image(img, pos.x - WIDTH / 2, pos.y - HEIGHT / 2, WIDTH, HEIGHT);
+    image(img, pos.x, pos.y, WIDTH, HEIGHT);
+    PVector end = new PVector(mouseX, mouseY);
+    PVector start = new PVector(pos.x + WIDTH / 2, pos.y + HEIGHT / 2);
+    end.sub(start);
+    if (end.mag() > 2 * SIZE) {
+      end.mult(1 / end.mag() * 2 * SIZE);
+    }
+    end.add(start);
+    strokeWeight(20);
+    stroke(color(100,100,100,200));
+    line(start.x, start.y, end.x, end.y);
   }
 }

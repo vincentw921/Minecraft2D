@@ -7,8 +7,6 @@ class Inventory {
   color border;
   color inside;
 
-  int curItem;
-
   public Inventory() {
     border = color(150);
     inside = color(200, 200, 200, 200);
@@ -40,8 +38,14 @@ class Inventory {
   }
 
   public void addItem(Item item) {
-    if (curItem >= rows * cols) {
-      return;
+    int curItem;
+    for (curItem = 0; curItem <= inven.length; curItem++) {
+      if (curItem >= inven.length) {
+        return;
+      }
+      if (inven[curItem % cols][curItem / cols] == null) {
+        break;
+      }
     }
     if (item.block == null) {
       inven[curItem % cols][curItem / cols] = item;
@@ -54,7 +58,6 @@ class Inventory {
         }
       }
     }
-    curItem++;
   }
 
   public void remove(int pos) {

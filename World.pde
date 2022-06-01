@@ -65,9 +65,17 @@ class World {
 
 
   public void checkHit() {
-    int x = (int)mouseX / SIZE + (int)screenPos.x;
-    int y = (int)mouseY / SIZE + (int)screenPos.y;
-    if (x > blocks.length || x < 0 || y > blocks[0].length || y < 0 ||
+    PVector end = new PVector(mouseX, mouseY);
+    PVector start = new PVector(player.pos.x + player.WIDTH / 2, player.pos.y + player.HEIGHT / 2);
+    end.sub(start);
+    if (end.mag() > 2 * SIZE) {
+      end.mult(1 / end.mag() * 3.2 * SIZE);
+    }
+    end.add(start);
+    
+    int x = (int)end.x / SIZE + (int)screenPos.x;
+    int y = (int)end.y / SIZE + (int)screenPos.y;
+    if (x >= blocks.length || x < 0 || y >= blocks[0].length || y < 0 ||
       blocks[x][y] == null) {
       return;
     }

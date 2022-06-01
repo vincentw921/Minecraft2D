@@ -30,12 +30,14 @@ public enum Type {
 class Tool {
   final int IMAGE_SIZE = 50;
   PVector pos;
+  String name;
   
   int damage;
   int health;
   PImage image;
   public Tool(Tools tool, Type material) {
     this.pos = new PVector(width / 2, height / 2 + 25 + 75);
+    this.name = tool.name + material.name;
     this.image = loadImage(tool.name + material.name + ".png");
     this.health = material.health;
     this.damage = material.damage;

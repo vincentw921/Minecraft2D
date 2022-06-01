@@ -30,7 +30,7 @@ class Player {
     return world.blocks[(int)world.screenPos.x + width / 2 / SIZE][12 + (int)world.screenPos.y] != null;
   }
   public boolean hasTopBlock() {
-    return world.blocks[(int)world.screenPos.x + width / 2 / SIZE][8 + (int)world.screenPos.y] != null;
+    return world.blocks[(int)world.screenPos.x + width / 2 / SIZE][7 + (int)world.screenPos.y] != null;
   }
   public boolean notHasLeft() {
     return world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y] == null 
@@ -55,6 +55,7 @@ class Player {
     vel.set(vel.x, min(vel.y, abs(11 + (int)world.screenPos.y - curNull)));
     vel.set(vel.x < 0 ? max(-MAX_HORIZONTAL_VEL, vel.x) : min(MAX_HORIZONTAL_VEL, vel.x), vel.y);
     if (!moving) vel.set(vel.x * FRICTION, vel.y);
+    //vel.set(vel.x < 0 ? max(vel.x,pos.x - 
     world.screenPos.add(vel);
     //println(vel.mag());
     moving = false;

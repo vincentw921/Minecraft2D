@@ -28,6 +28,7 @@ void draw() {
   }
   if (isPressed[3]) {
     if (player.hasGround()) {
+      player.vel.set(player.vel.x,0);
       player.vel.add(0, -0.2);
     }
   }

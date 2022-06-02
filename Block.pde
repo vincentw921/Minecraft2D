@@ -26,6 +26,7 @@ final int SIZE = 50;
 class Block {
   Blocks btype;
   color c;
+  int[] car;
   float health;
 
   float x, y;
@@ -33,13 +34,15 @@ class Block {
   public Block(Blocks btype) {
     this.btype = btype;
     this.c = color(btype.col[0], btype.col[1], btype.col[2]);
+    this.car = btype.col;
     this.health = btype.health;
     this.x = 0;
     this.y = 0;
   }
   
-  public Block(int c, float health) {
-    this.c = (color)c;
+  public Block(int[] c, float health) {
+    this.c = color(c[0], c[1], c[2]);
+    this.car = c;
     this.health = health;
   }
 

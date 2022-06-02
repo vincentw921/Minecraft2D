@@ -16,8 +16,7 @@ void setup() {
   int buttonh = 300;
   play = new Button(width / 2 - buttonw / 2, 100, buttonw, buttonh, color(100), color(0), "Play Now!");
 
-  File tmp = new File(saveAs);
-  if (!tmp.exists()) {
+  if (createInput("saves/" + saveAs) == null) {
     world = new World();
     player = new Player();
     inventory = new Inventory();
@@ -25,7 +24,7 @@ void setup() {
     mouse = new boolean[2];
     return;
   }
-  Table t = loadTable(saveAs);
+  Table t = loadTable("saves/" + saveAs);
   world = new World();
   TableRow worldLocation = t.getRow(0);
   world.screenPos.x = worldLocation.getFloat(0);
@@ -34,30 +33,32 @@ void setup() {
   TableRow playerPos = t.getRow(1);
   player.pos.x = playerPos.getFloat(0);
   player.pos.y = playerPos.getFloat(1);
-
-  TableRow blocks = t.getRow(2);
+  TableRow btype = t.getRow(2);
   TableRow blockHealths = t.getRow(3);
   for (int i = 0; i < world.WORLD_WIDTH * world.WORLD_HEIGHT; i++) {
-    if (blocks.getInt(i) == -1) {
+    if (btype.getString(i).equals("null")) {
       continue;
     }
-    world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = new Block(blocks.getInt(i), blockHealths.getFloat(i));
+    world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = new Block(Blocks.valueOf(btype.getString(i)));
+    world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH].health = blockHealths.getFloat(i);
   }
+  println(world.screenPos.x, world.screenPos.y);
   inventory = new Inventory();
   TableRow toolName = t.getRow(4);
   TableRow damage = t.getRow(5);
   TableRow health = t.getRow(6);
-  TableRow col = t.getRow(7);
+  TableRow Btype = t.getRow(7);
   TableRow amount = t.getRow(8);
 
   for (int i = 0; i < inventory.rows * inventory.cols; i++) {
     if (toolName.getString(i).equals("Inven Null")) {
       continue;
     }
-    if (col.getInt(i) == 0) {
+    if (Btype.getString(i).equals("null")) {
       inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Tool(toolName.getString(i), health.getInt(i), damage.getInt(i)));
     } else {
-      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Block(col.getInt(i), health.getFloat(i)), amount.getInt(i));
+      Block temp = new Block(Blocks.valueOf(Btype.getString(i)));
+      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(temp, amount.getInt(i));
     }
   }
   isPressed = new boolean[5];
@@ -178,24 +179,24 @@ void exit() {
   table.addRow(new Float[] {world.screenPos.x, world.screenPos.y});
   table.addRow(new Float[] {player.pos.x, player.pos.y});
 
-  Integer[] c = new Integer[world.blocks[0].length * world.blocks.length];
+  String[] btype = new String[world.blocks[0].length * world.blocks.length];
   Float[] healths = new Float[world.blocks[0].length * world.blocks.length];
   for (int i = 0; i < world.blocks.length; i++) {
     for (int j = 0; j < world.blocks[0].length; j++) {
       if (world.blocks[i][j] == null) {
-        c[i + j * world.blocks.length] = -1;
+        btype[i + j * world.blocks.length] = "null";
         continue;
       }
       healths[i + j * world.blocks.length] = world.blocks[i][j].health;
-      c[i + j * world.blocks.length] = world.blocks[i][j].c;
+      btype[i + j * world.blocks.length] = world.blocks[i][j].btype.toString();
     }
   }
-  table.addRow(c);
+  table.addRow(btype);
   table.addRow(healths);
   String[] toolName = new String[inventory.inven.length * inventory.inven[0].length];
   Integer[] damage = new Integer[inventory.inven.length * inventory.inven[0].length];
   Float[] health = new Float[inventory.inven.length * inventory.inven[0].length];
-  Integer[] col = new Integer[inventory.inven.length * inventory.inven[0].length];
+  String[] Btype = new String[inventory.inven.length * inventory.inven[0].length];
   Integer[] amount = new Integer[inventory.inven.length * inventory.inven[0].length];
 
   for (int i = 0; i < inventory.inven.length; i++) {
@@ -206,10 +207,12 @@ void exit() {
       }
       if (inventory.inven[i][j].tool == null) {
         health[i + j * inventory.inven.length] = inventory.inven[i][j].block.health;
-        col[i + j * inventory.inven.length] = inventory.inven[i][j].block.c;
+        Btype[i + j * inventory.inven.length] = inventory.inven[i][j].block.btype.toString();
         amount[i + j * inventory.inven.length] = inventory.inven[i][j].amount;
         continue;
       }
+      Btype[i + j * inventory.inven.length] = "null";
+
       toolName[i + j * inventory.inven.length] = inventory.inven[i][j].tool.name;
       health[i + j * inventory.inven.length] = Float.valueOf(inventory.inven[i][j].tool.health);
       damage[i + j * inventory.inven.length] = inventory.inven[i][j].tool.damage;
@@ -218,7 +221,7 @@ void exit() {
   table.addRow(toolName);
   table.addRow(damage);
   table.addRow(health);
-  table.addRow(col);
+  table.addRow(Btype);
   table.addRow(amount);
   saveTable(table, "saves/" + saveAs);
   dispose();

@@ -23,8 +23,12 @@ public enum Blocks {
 }
 
 final int SIZE = 50;
+final int SIZE_DEAD = 10;
 
 class Block {
+  boolean isDead;
+  float deadTimer = 100 * 60 * 30;
+
   Blocks btype;
   color c;
   int[] car;
@@ -48,6 +52,13 @@ class Block {
   }
 
   public void display(float x, float y) {
+    if (isDead) {
+      deadTimer--;
+      stroke(0);
+      strokeWeight(1);
+      fill(c);
+      square(this.x, this.y, SIZE_DEAD);
+    }
     this.x = x * SIZE;
     this.y = y * SIZE;
     stroke(0);
@@ -72,36 +83,6 @@ class Block {
     if (btype == Blocks.BEDROCK) {
       return;
     }
-    if (isHit() && mouseClose()) {
-      this.health -= 50;
-    }
-  }
-
-  private boolean mouseClose() {
-    PVector end = new PVector(mouseX, mouseY);
-    PVector start = new PVector(player.pos.x + player.WIDTH / 2, player.pos.y + player.HEIGHT / 2);
-    end.sub(start);
-    boolean close = end.mag() < 3 * SIZE;
-    /*
-    end.mult(1 / end.mag() * SIZE * 0.9);
-     end.add(start);
-     if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
-     return false;
-     }
-     end.sub(start);
-     end.div(1 / end.mag() * SIZE * 0.9);
-     end.mult(1 / end.mag() * SIZE * 1.8);
-     end.add(start);
-     if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
-     return false;
-     }
-     */
-    return close;
-  }
-
-  private boolean isHit() {
-    boolean tmp = mouseX > x && mouseX < x + SIZE
-      && mouseY > y && mouseY < y + SIZE;
-    return tmp;
+    this.health -= 50;
   }
 }

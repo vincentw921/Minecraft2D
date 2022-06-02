@@ -68,8 +68,8 @@ class World {
     PVector end = new PVector(mouseX, mouseY);
     PVector start = new PVector(player.pos.x + player.WIDTH / 2, player.pos.y + player.HEIGHT / 2);
     end.sub(start);
-    if (end.mag() > 2 * SIZE) {
-      end.mult(1 / end.mag() * 3.2 * SIZE);
+    if (end.mag() > 3 * SIZE) {
+      end.mult(1 / end.mag() * 3 * SIZE);
     }
     end.add(start);
     
@@ -81,6 +81,8 @@ class World {
     }
     blocks[x][y].hit();
     if (blocks[x][y].health <= 0) {
+      blocks[x][y].isDead = true;
+      deadBlocks.addBlock(blocks[x][y]);
       blocks[x][y] = null;
     }
   }

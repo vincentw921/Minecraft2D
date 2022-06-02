@@ -1,3 +1,4 @@
+DeadBlocks deadBlocks = new DeadBlocks();
 World world;
 Player player;
 Inventory inventory;
@@ -87,6 +88,7 @@ void draw() {
   }
   background(135, 206, 235);
   world.display();
+  deadBlocks.display(world.screenPos.x, world.screenPos.y);
   player.display();
   if (!(isPressed[0] && isPressed[1])) {
     if (isPressed[0] && player.notHasLeft()) {

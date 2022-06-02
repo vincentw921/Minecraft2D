@@ -2,17 +2,21 @@ World world;
 Player player;
 Inventory inventory;
 
-String[] qwerty = {"Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"};
-boolean worldLoaded;
-String saveAs = "text.txt";
+boolean worldLoaded = false;
+boolean enterPressed = false;
+String saveAs = "";
+Button play;
 
 boolean[] isPressed;
 boolean[] mouse;
 
 void setup() {
   size(1000, 1000);
+  int buttonw = 800;
+  int buttonh = 300;
+  play = new Button(width / 2 - buttonw / 2, 100, buttonw, buttonh, color(100), color(0), "Play Now!");
+
   File tmp = new File(saveAs);
-  worldLoaded = false;
   if (!tmp.exists()) {
     world = new World();
     player = new Player();
@@ -62,6 +66,22 @@ void setup() {
 
 void draw() {
   if (!worldLoaded) {
+    background(0);
+    play.display();
+    displayTextBox(width / 2 - 800 / 2, 500);
+    if (play.beenPressed || enterPressed) {
+      enterPressed = false;
+      if (saveAs.length() <= 0) {
+        println("Please enter a valid file name");
+        return;
+      }
+      if (!saveAs.contains(".csv")) {
+        saveAs += ".csv";
+      }
+      worldLoaded = true;
+      setup();
+    }
+    return;
   }
   background(135, 206, 235);
   world.display();
@@ -95,7 +115,12 @@ void draw() {
 
 void keyPressed() {
   if (!worldLoaded) {
-    if (key == '\n') {
+    if (key == '\b') {
+      saveAs = saveAs.substring(0, max(0, saveAs.length() - 1));
+    } else if (key == '\n') {
+      enterPressed = true;
+    } else {
+      saveAs += key;
     }
     return;
   }
@@ -126,6 +151,10 @@ void keyReleased() {
 }
 
 void mousePressed() {
+  if (!worldLoaded) {
+    play.checkPress(mouseX, mouseY);
+    return;
+  }
   if (mouseButton == LEFT) {
     mouse[0] = true;
   }
@@ -191,6 +220,6 @@ void exit() {
   table.addRow(health);
   table.addRow(col);
   table.addRow(amount);
-  saveTable(table, "saves/" + saveAs + ".csv");
+  saveTable(table, "saves/" + saveAs);
   dispose();
 }

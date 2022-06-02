@@ -37,6 +37,7 @@ void setup() {
   TableRow blockHealths = t.getRow(3);
   for (int i = 0; i < world.WORLD_WIDTH * world.WORLD_HEIGHT; i++) {
     if (btype.getString(i).equals("null")) {
+      world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = null;
       continue;
     }
     world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = new Block(Blocks.valueOf(btype.getString(i)));

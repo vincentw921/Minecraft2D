@@ -1,6 +1,7 @@
 public enum Blocks {
   TREE(new int[] {97, 59, 22}, 50),
     LEAVES(new int[] {12, 174, 91}, 50),
+    WOOD(new int[] {150, 111, 51}, 50),
     GRASS(new int[] {86, 125, 70}, 50),
     DIRT(new int[] {155, 118, 83}, 50),
     SAND(new int[] {225, 217, 199}, 50),
@@ -11,7 +12,7 @@ public enum Blocks {
     COAL(new int[] {43, 45, 47}, 50),
     GOLD(new int[] {212, 175, 55}, 50),
     DIAMOND(new int[] {185, 242, 255}, 50),
-    BEDROCK(new int[] {0,0,0}, 10000);
+    BEDROCK(new int[] {0, 0, 0}, 10000);
 
   int[] col;
   float health;
@@ -39,7 +40,7 @@ class Block {
     this.x = 0;
     this.y = 0;
   }
-  
+
   public Block(int[] c, float health) {
     this.c = color(c[0], c[1], c[2]);
     this.car = c;
@@ -75,7 +76,7 @@ class Block {
       this.health -= 50;
     }
   }
-  
+
   private boolean mouseClose() {
     PVector end = new PVector(mouseX, mouseY);
     PVector start = new PVector(player.pos.x + player.WIDTH / 2, player.pos.y + player.HEIGHT / 2);
@@ -83,21 +84,21 @@ class Block {
     boolean close = end.mag() < 3 * SIZE;
     /*
     end.mult(1 / end.mag() * SIZE * 0.9);
-    end.add(start);
-    if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
-      return false;
-    }
-    end.sub(start);
-    end.div(1 / end.mag() * SIZE * 0.9);
-    end.mult(1 / end.mag() * SIZE * 1.8);
-    end.add(start);
-    if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
-      return false;
-    }
-    */
+     end.add(start);
+     if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
+     return false;
+     }
+     end.sub(start);
+     end.div(1 / end.mag() * SIZE * 0.9);
+     end.mult(1 / end.mag() * SIZE * 1.8);
+     end.add(start);
+     if (world.blocks[(int)world.screenPos.x + (int)end.x / SIZE][(int)world.screenPos.y + (int)end.y / SIZE] != null) {
+     return false;
+     }
+     */
     return close;
   }
-  
+
   private boolean isHit() {
     boolean tmp = mouseX > x && mouseX < x + SIZE
       && mouseY > y && mouseY < y + SIZE;

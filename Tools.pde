@@ -2,7 +2,8 @@ public enum Tools {
   PICKAXE("pick"),
   AXE("axe"),
   SHOVEL("shovel"),
-  SWORD("sword");
+  SWORD("sword"),
+  STICK("stick");
   
   String name;
   private Tools(String name) {

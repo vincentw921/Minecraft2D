@@ -34,7 +34,7 @@ class Block {
   int[] car;
   float health;
 
-  float x, y;
+  int x, y;
 
   public Block(Blocks btype) {
     this.btype = btype;
@@ -45,7 +45,9 @@ class Block {
     this.y = 0;
   }
 
-  public Block(int[] c, float health) {
+  public Block(int[] c, float health, int posX, int posY) {
+    this.x = posX;
+    this.y = posY;
     this.c = color(c[0], c[1], c[2]);
     this.car = c;
     this.health = health;
@@ -59,24 +61,53 @@ class Block {
       fill(c);
       square(this.x, this.y, SIZE_DEAD);
     }
-    this.x = x * SIZE;
-    this.y = y * SIZE;
     stroke(0);
     strokeWeight(1);
     fill(c);
     square(x * SIZE, y * SIZE, SIZE);
   }
   public void display(float x, float y, int size) {
-    this.x = x * size;
-    this.y = y * size;
     stroke(0);
     strokeWeight(1);
     fill(c);
     square(x * size, y * size, size);
   }
-  public boolean touching(float x, float y, float otherx, float othery) {
-    return otherx > x && otherx < x + SIZE
-      && othery > y && othery < y + SIZE;
+  public boolean touching(float x, float y) {
+    float bx = x - world.screenPos.x + (int)world.screenPos.x;
+    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    return x >= bx - 1 && x <= bx + SIZE + 1
+      && y >= by - 1 && y <= by + SIZE + 1;
+  }
+  
+  public PVector getPosition() {
+    float bx = x - world.screenPos.x + (int)world.screenPos.x;
+    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    
+    return new PVector(bx, by);
+  } 
+
+  public boolean playerTouching(float x, float y, float w, float h) {
+    return touching(x, y) || touching(x + w, y) || touching(x, y + h) || touching (x + w, y + h);
+  }
+  public float getXSpeedUntilTouching(float x, float w, boolean movingLeft) {
+    float bx = x - world.screenPos.x + (int)world.screenPos.x;
+    if (movingLeft) {
+      return x - bx + SIZE;
+    } else {
+      return bx - (x + w);
+    }
+  }
+  
+  public float getYSpeedUntilTouching(float y, float h, boolean movingUp) {
+    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    if (y + h > by) {
+      movingUp = true;
+    }
+    if (movingUp) {
+      return y - by + SIZE;
+    } else {
+      return by - (y + h);
+    }
   }
 
   public void hit() {

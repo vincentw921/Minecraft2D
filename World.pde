@@ -45,6 +45,20 @@ class World {
       blocks[blocks.length - 1][j] = new Block(Blocks.BEDROCK);
     }
   }
+  
+  public boolean hasPosition(int col, int row) {
+    return col >= 0 && col < blocks.length && row >= 0 && row < blocks[0].length;
+  }
+   
+  public boolean hasBlock(int col, int row) {
+     if (!hasPosition(col, row)) return false;
+     return blocks[col][row] != null;
+  }
+
+  public Block getBlock(int col, int row) {
+     if (!hasPosition(col, row)) return null;
+     return blocks[col][row];
+  }
 
   public void display() {
     float ox = screenPos.x;

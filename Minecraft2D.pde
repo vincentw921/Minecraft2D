@@ -16,7 +16,6 @@ void setup() {
   int buttonw = 800;
   int buttonh = 300;
   play = new Button(width / 2 - buttonw / 2, 100, buttonw, buttonh, color(100), color(0), "Play Now!");
-
   if (createInput("saves/" + saveAs) == null) {
     world = new World();
     player = new Player();
@@ -44,7 +43,6 @@ void setup() {
     world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH] = new Block(Blocks.valueOf(btype.getString(i)));
     world.blocks[i % world.WORLD_WIDTH][i / world.WORLD_WIDTH].health = blockHealths.getFloat(i);
   }
-  println(world.screenPos.x, world.screenPos.y);
   inventory = new Inventory();
   TableRow toolName = t.getRow(4);
   TableRow damage = t.getRow(5);
@@ -91,20 +89,17 @@ void draw() {
   deadBlocks.display(world.screenPos.x, world.screenPos.y);
   player.display();
   if (!(isPressed[0] && isPressed[1])) {
-    if (isPressed[0] && player.notHasLeft()) {
+    if (isPressed[0] && player.notHasLeft(-0.01)) {
       player.moveX(-0.01);
-    } else if (isPressed[1] && player.notHasRight()) {
+    } else if (isPressed[1] && player.notHasRight(0.01)) {
       player.moveX(0.01);
     }
   }
   if (isPressed[3]) {
-    if (player.hasGround()) {
+    if (player.hasGround(-0.2)) {
       player.vel.set(player.vel.x, 0);
       player.vel.add(0, -0.2);
     }
-  }
-  if (player.hasTopBlock()) {
-    player.vel.set(player.vel.x, 0);
   }
   if (isPressed[2]) {
     inventory.display();

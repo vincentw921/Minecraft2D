@@ -1,8 +1,7 @@
-import java.util.List;
+final PVector GRAVITY = new PVector(0, 0.01);
 
 class Player {
   final float FRICTION = 0.8;
-  final PVector GRAVITY = new PVector(0, 0.01);
   final float MAX_HORIZONTAL_VEL = 0.15;
 
 
@@ -69,6 +68,15 @@ class Player {
         curNull++;
       }
       vel.set(vel.x, min(vel.y + GRAVITY.y, world.blocks[(int)world.screenPos.x + width / 2 / SIZE][curNull].getYSpeedUntilTouching(pos.x, pos.y, false)));
+    }
+    if (vel.x < 0) {
+      if (!notHasLeft(vel.x)) {
+        vel.set(min(vel.x, world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, pos.w, true)), vel.y);
+      }
+    } else {
+      if (!notHasRight(vel.y)) {
+        vel.set(min(vel.x, world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, pos.w, true)), vel.y);
+      }
     }
     vel.set(vel.x < 0 ? max(-MAX_HORIZONTAL_VEL, vel.x) : min(MAX_HORIZONTAL_VEL, vel.x), vel.y);
     if (!moving) vel.set(vel.x * FRICTION, vel.y);

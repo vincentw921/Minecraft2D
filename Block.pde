@@ -72,6 +72,16 @@ class Block {
     fill(c);
     square(x * size, y * size, size);
   }
+  
+  public void display(int size) {
+    float bx = x - world.screenPos.x + (int)world.screenPos.x;
+    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    stroke(0);
+    strokeWeight(1);
+    fill(c);
+    square(bx, by, size);
+  }
+  
   public boolean touching(float x, float y) {
     float bx = x - world.screenPos.x + (int)world.screenPos.x;
     float by = y - world.screenPos.y + (int)world.screenPos.y;
@@ -87,7 +97,8 @@ class Block {
   } 
 
   public boolean playerTouching(float x, float y, float w, float h) {
-    return touching(x, y) || touching(x + w, y) || touching(x, y + h) || touching (x + w, y + h);
+    return touching(x, y) || touching(x + w, y) || touching(x, y + h) || touching (x + w, y + h) || touching(x,y + h/3) || touching(x + w, y + h/3) || touching(x, y + 2 * h / 3) || touching(x + w, y + 2 * h / 3)
+     || touching(x, y + 7 * h / 10) || touching(x + w, y + 7 * h / 10) || touching(x, y + 8 * h / 10) || touching(x + w, y + 8 * h / 10);
   }
   public float getXSpeedUntilTouching(float x, float w, boolean movingLeft) {
     float bx = x - world.screenPos.x + (int)world.screenPos.x;

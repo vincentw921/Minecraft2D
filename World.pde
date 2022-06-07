@@ -96,7 +96,7 @@ class World {
     blocks[x][y].hit();
     if (blocks[x][y].health <= 0) {
       blocks[x][y].isDead = true;
-      deadBlocks.addBlock(blocks[x][y]);
+      deadBlocks.addBlock(blocks[x][y], screenPos.x, screenPos.y);
       blocks[x][y] = null;
     }
   }

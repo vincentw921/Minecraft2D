@@ -71,11 +71,33 @@ class Player {
     }
     if (vel.x < 0) {
       if (!notHasLeft(vel.x)) {
-        vel.set(min(vel.x, world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, pos.w, true)), vel.y);
+        boolean firstBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y] != null;
+        boolean secondBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][10 + (int)world.screenPos.y] != null;
+        boolean thirdBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][9 + (int)world.screenPos.y] != null;
+        float dist = 10000;
+        if (firstBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        } else if (secondBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][10 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        } else if (thirdBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][9 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        }
+        vel.set(min(vel.x, dist), vel.y);
       }
     } else {
       if (!notHasRight(vel.y)) {
-        vel.set(min(vel.x, world.blocks[(int)world.screenPos.x + width / 2 / SIZE - 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, pos.w, true)), vel.y);
+        boolean firstBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][11 + (int)world.screenPos.y] != null;
+        boolean secondBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][10 + (int)world.screenPos.y] != null;
+        boolean thirdBlock = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][9 + (int)world.screenPos.y] != null;
+        float dist = 10000;
+        if (firstBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][11 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        } else if (secondBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][10 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        } else if (thirdBlock) {
+          dist = world.blocks[(int)world.screenPos.x + width / 2 / SIZE + 1][9 + (int)world.screenPos.y].getXSpeedUntilTouching(pos.x, WIDTH, true);
+        }
+        vel.set(min(vel.x, dist), vel.y);
       }
     }
     vel.set(vel.x < 0 ? max(-MAX_HORIZONTAL_VEL, vel.x) : min(MAX_HORIZONTAL_VEL, vel.x), vel.y);

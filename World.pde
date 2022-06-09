@@ -11,6 +11,9 @@ class World {
     for (int i = 0; i < blocks.length; i++) {
       for (int j = 0; j < blocks[0].length; j++) {
         blocks[i][j] = generateBlock(j);
+        if (blocks[i][j] == null) continue;
+        blocks[i][j].x = i;
+        blocks[i][j].y = j;
       }
     }
     int prevTree = 3;
@@ -26,13 +29,25 @@ class World {
       int maxH = (int)random(3, 8);
       for (int h = 0; h < maxH; h++) {
         blocks[i][119 - h] = new Block(Blocks.TREE);
+        blocks[i][119 - h].x = i;
+        blocks[i][119 - h].y = 119-h;
       }
       blocks[i][119 - maxH] = new Block(Blocks.LEAVES);
+      blocks[i][119 - maxH].x = i;
+      blocks[i][119 - maxH].y = 119-maxH;
       blocks[i-1][119-maxH] = new Block(Blocks.LEAVES);
+      blocks[i-1][119 - maxH].x = i-1;
+      blocks[i-1][119 - maxH].y = 119-maxH;
       blocks[i-1][119-maxH + 1] = new Block(Blocks.LEAVES);
+      blocks[i-1][119 - maxH + 1].x = i-1;
+      blocks[i-1][119 - maxH + 1].y = 119-maxH + 1;
       if (i + 1 < blocks.length) {
         blocks[i+1][119-maxH] = new Block(Blocks.LEAVES);
         blocks[i+1][119-maxH + 1] = new Block(Blocks.LEAVES);
+        blocks[i+1][119-maxH].x = i + 1;
+        blocks[i+1][119-maxH].y = 119 - maxH;
+        blocks[i+1][119-maxH + 1].x = i + 1;
+        blocks[i+1][119-maxH + 1].y = 119 - maxH + 1;
       }
     }
 
@@ -45,19 +60,19 @@ class World {
       blocks[blocks.length - 1][j] = new Block(Blocks.BEDROCK);
     }
   }
-  
+
   public boolean hasPosition(int col, int row) {
     return col >= 0 && col < blocks.length && row >= 0 && row < blocks[0].length;
   }
-   
+
   public boolean hasBlock(int col, int row) {
-     if (!hasPosition(col, row)) return false;
-     return blocks[col][row] != null;
+    if (!hasPosition(col, row)) return false;
+    return blocks[col][row] != null;
   }
 
   public Block getBlock(int col, int row) {
-     if (!hasPosition(col, row)) return null;
-     return blocks[col][row];
+    if (!hasPosition(col, row)) return null;
+    return blocks[col][row];
   }
 
   public void display() {
@@ -86,7 +101,7 @@ class World {
       end.mult(1 / end.mag() * 3 * SIZE);
     }
     end.add(start);
-    
+
     int x = (int)end.x / SIZE + (int)screenPos.x;
     int y = (int)end.y / SIZE + (int)screenPos.y;
     if (x >= blocks.length || x < 0 || y >= blocks[0].length || y < 0 ||
@@ -96,11 +111,11 @@ class World {
     blocks[x][y].hit();
     if (blocks[x][y].health <= 0) {
       blocks[x][y].isDead = true;
-      deadBlocks.addBlock(blocks[x][y], screenPos.x, screenPos.y);
+      deadBlocks.addBlock(blocks[x][y]);
       blocks[x][y] = null;
     }
   }
-  
+
   private Block generateBlock(int h) {
     if (h < 120) {
       return null;

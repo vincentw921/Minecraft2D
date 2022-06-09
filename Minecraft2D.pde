@@ -11,7 +11,7 @@ Button play;
 boolean[] isPressed;
 boolean[] mouse;
 
-void setup() {
+void setup() {  
   size(1000, 1000);
   int buttonw = 800;
   int buttonh = 300;
@@ -86,7 +86,7 @@ void draw() {
   }
   background(135, 206, 235);
   world.display();
-  deadBlocks.display(world.screenPos.x, world.screenPos.y);
+  deadBlocks.display();
   player.display();
   if (!(isPressed[0] && isPressed[1])) {
     if (isPressed[0] && player.notHasLeft(-0.01)) {

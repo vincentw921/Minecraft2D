@@ -1,18 +1,25 @@
 class DeadBlocks {
   HashMap<Block, Integer> dbs = new HashMap<Block, Integer>();
-
-  void display(float x, float y) {
+  
+  void display() {
     for (Block b : dbs.keySet()) {
-      if (b.playerTouching(x,y,width / 50, height / 50)) {
+      b.decreaseY();
+      if (b.x > world.screenPos.x && b.x < world.screenPos.x + width / SIZE + 1
+        && b.y > world.screenPos.y && b.y < world.screenPos.y + height / SIZE + 1) {
         b.display(20);
       }
     }
   }
 
-  void addBlock(Block newBlock, float x, float y) {
+  void addBlock(Block newBlock) {
+    println("ADDDING");
     for (Block b : dbs.keySet()) {
-      if (newBlock.btype == b.btype && newBlock.x > x && newBlock.x < x + width / SIZE && newBlock.y > y && newBlock.y < y + height / SIZE) {
-        dbs.put(b, dbs.get(b) + 1);
+      if (newBlock.btype == b.btype && b.x > world.screenPos.x && b.x < world.screenPos.x + width / SIZE + 1 && b.y > world.screenPos.y && b.y < world.screenPos.y + height / SIZE + 1) {
+        int temp = dbs.get(b);
+        if (temp + 1 > 64) {
+          break;
+        }
+        dbs.put(b, temp + 1);
         return;
       }
     }

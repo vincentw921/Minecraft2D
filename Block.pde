@@ -34,7 +34,7 @@ class Block {
   int[] car;
   float health;
 
-  int x, y;
+  float x, y;
 
   public Block(Blocks btype) {
     this.btype = btype;
@@ -59,12 +59,17 @@ class Block {
       stroke(0);
       strokeWeight(1);
       fill(c);
-      square(this.x, this.y, SIZE_DEAD);
+      square(this.x * SIZE, this.y * SIZE, SIZE_DEAD);
     }
     stroke(0);
     strokeWeight(1);
     fill(c);
     square(x * SIZE, y * SIZE, SIZE);
+  }
+  public void decreaseY() {
+    if (world.blocks[(int)x][(int)y] == null) {
+      y += 0.01;
+    }
   }
   public void display(float x, float y, int size) {
     stroke(0);
@@ -74,12 +79,12 @@ class Block {
   }
   
   public void display(int size) {
-    float bx = x - world.screenPos.x + (int)world.screenPos.x;
-    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    float bx = x - world.screenPos.x;
+    float by = y - world.screenPos.y;
     stroke(0);
     strokeWeight(1);
     fill(c);
-    square(bx, by, size);
+    square(bx * 50 + 50 / 2 - 10, by * 50 - 20, size);
   }
   
   public boolean touching(float x, float y) {

@@ -32,7 +32,9 @@ class Inventory {
         if (inven[r-1][c-1] != null) {
           continue;
         }
-        inven[r-1][c-1].display(leftX + c * cellWidth, topY + r * cellHeight, (bottomY - topY) / rows);
+        if (inven[r-1][c-1] != null) {
+          inven[r-1][c-1].display(leftX + c * cellWidth, topY + r * cellHeight, (bottomY - topY) / rows);
+        }
         //vertical line
         line(leftX + c * cellWidth, topY, leftX + c * cellWidth, bottomY);
         //horizontal line
@@ -67,11 +69,11 @@ class Inventory {
   public void remove(int pos) {
     inven[pos % cols][pos / cols] = null;
   }
-  
+
   public void move(int pos, int otherPos) {
     Item temp = null;
     if (inven[otherPos % cols][otherPos / cols] != null) {
-     temp = inven[otherPos % cols][otherPos / cols]; 
+      temp = inven[otherPos % cols][otherPos / cols];
     }
     inven[otherPos % cols][otherPos / cols] = inven[pos % cols][pos / cols];
     inven[pos % cols][pos / cols] = temp;

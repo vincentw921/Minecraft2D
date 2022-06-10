@@ -25,4 +25,8 @@ class DeadBlocks {
     }
     dbs.put(newBlock, 1);
   }
+  
+  void checkPlayerTouching() {
+    
+  }
 }

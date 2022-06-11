@@ -93,6 +93,12 @@ class Block {
     return x >= bx - 1 && x <= bx + SIZE + 1
       && y >= by - 1 && y <= by + SIZE + 1;
   }
+  public boolean touching(float x, float y, float SIZE) {
+    float bx = x - world.screenPos.x + (int)world.screenPos.x;
+    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    return x >= bx - 1 && x <= bx + SIZE + 1
+      && y >= by - 1 && y <= by + SIZE + 1;
+  }
   
   public PVector getPosition() {
     float bx = x - world.screenPos.x + (int)world.screenPos.x;
@@ -100,6 +106,10 @@ class Block {
     
     return new PVector(bx, by);
   } 
+  
+  public boolean playerTouchingDead(float x, float y, float w, float h) {
+    return touching(x, y, 20) || touching(x + w, y, 20) || touching(x, y + h, 20) || touching (x + w, y + h, 20);
+  }
 
   public boolean playerTouching(float x, float y, float w, float h) {
     return touching(x, y) || touching(x + w, y) || touching(x, y + h) || touching (x + w, y + h) || touching(x,y + h/3) || touching(x + w, y + h/3) || touching(x, y + 2 * h / 3) || touching(x + w, y + 2 * h / 3)

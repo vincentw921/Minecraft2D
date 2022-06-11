@@ -30,7 +30,7 @@ class DeadBlocks {
       b.decreaseY();
       if (b.x > world.screenPos.x && b.x < world.screenPos.x + width / SIZE + 1
         && b.y > world.screenPos.y && b.y < world.screenPos.y + height / SIZE + 1
-        && b.playerTouchingDead(player.pos.x,player.pos.y,player.WIDTH, player.HEIGHT)) {\
+        && b.playerTouchingDead(player.pos.x,player.pos.y,player.WIDTH, player.HEIGHT)) {
         inventory.addItem(new Item(b, dbs.get(b)));
         dbs.remove(b);
       }

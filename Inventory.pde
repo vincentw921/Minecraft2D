@@ -29,14 +29,14 @@ class Inventory {
     int cellHeight = (bottomY - topY) / (rows + 1);
     for (int r = 1; r < rows + 1; r++) {
       for (int c = 1; c < cols + 1; c++) {
-        if (inven[r-1][c-1] == null) {
-          continue;
-        }
-        inven[r-1][c-1].display(leftX + c * cellWidth, topY + r * cellHeight, (bottomY - topY) / rows);
         //vertical line
         line(leftX + c * cellWidth, topY, leftX + c * cellWidth, bottomY);
         //horizontal line
         line(leftX, topY + r * cellHeight, rightX, topY + r * cellHeight);
+        if (inven[r-1][c-1] == null) {
+          continue;
+        }
+        inven[r-1][c-1].display(leftX + c * cellWidth, topY + r * cellHeight, (bottomY - topY) / rows);
       }
     }
   }

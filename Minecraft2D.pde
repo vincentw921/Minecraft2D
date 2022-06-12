@@ -10,6 +10,7 @@ Button play;
 
 boolean[] isPressed;
 boolean[] mouse;
+boolean autosave;
 
 void setup() {  
   size(1000, 1000);
@@ -63,6 +64,8 @@ void setup() {
   }
   isPressed = new boolean[5];
   mouse = new boolean[2];
+  autosave = false;
+  println("AUTOSAVE : " + (autosave ? "ON" : "OFF"));
 }
 
 void draw() {
@@ -89,28 +92,46 @@ void draw() {
   deadBlocks.display();
   deadBlocks.checkPlayerTouching();
   player.display();
-  if (!(isPressed[0] && isPressed[1])) {
-    if (isPressed[0] && player.notHasLeft(-0.01)) {
-      player.moveX(-0.01);
-    } else if (isPressed[1] && player.notHasRight(0.01)) {
-      player.moveX(0.01);
+  if(!isPressed[2]){
+    if (!(isPressed[0] && isPressed[1])) {
+      if (isPressed[0] && player.notHasLeft(-0.01)) {
+        player.moveX(-0.01);
+      } else if (isPressed[1] && player.notHasRight(0.01)) {
+        player.moveX(0.01);
+      }
+    }
+    if (isPressed[3]) {
+      if (player.hasGround(-0.2)) {
+        player.vel.set(player.vel.x, 0);
+        player.vel.add(0, -0.2);
+      }
     }
   }
-  if (isPressed[3]) {
-    if (player.hasGround(-0.2)) {
-      player.vel.set(player.vel.x, 0);
-      player.vel.add(0, -0.2);
-    }
-  }
+  
   if (isPressed[2]) {
     inventory.display();
+  } else {
+    inventory.selecting = false;
+    inventory.selected = new int[]{0, 0};
   }
 
-  if (mouse[0]) {
+  if (mouse[0] && !isPressed[2]) {
     world.checkHit();
   }
 
   player.run();
+  if(!autosave){
+    fill(255, 100, 50, 150);
+  } else {
+    fill(100, 255, 50, 150);
+  }
+  stroke(0);
+  strokeWeight(1);
+  rect(width - 220, height - 50, 220, 50, 10);
+  fill(0);
+  textSize(15);
+  text("press space to toggle autosave", width - 100, height - 30);
+
 }
 
 void keyPressed() {
@@ -133,13 +154,9 @@ void keyPressed() {
   if (key == 'w') {
     isPressed[3] = true;
   }
-  if (key == 'e') {
-    isPressed[2] = !isPressed[2];
-  }
   
-  if (key == 'g') {
-    inventory.print();
-  }
+  
+  
 }
 
 void keyReleased() {
@@ -151,6 +168,15 @@ void keyReleased() {
   }
   if (key == 'w') {
     isPressed[3] = false;
+  }
+  if (key == 'g') {
+    println(inventory.selected[0] + " " + inventory.selected[1] + " " + inventory.selecting);
+  }
+  if(key == ' '){
+    autosave = !autosave;
+  }
+  if (key == 'e') {
+    isPressed[2] = !isPressed[2];
   }
 }
 
@@ -174,9 +200,13 @@ void mouseReleased() {
   if (mouseButton == RIGHT) {
     mouse[1] = false;
   }
+  if(isPressed[2]){
+    inventory.setSelected(mouseX, mouseY);
+  }
 }
 
 void exit() {
+  if(!autosave) return;
   Table table = new Table();
 
   table.addRow(new Float[] {world.screenPos.x, world.screenPos.y});

@@ -26,6 +26,9 @@ class DeadBlocks {
   }
 
   void checkPlayerTouching() {
+    if (inventory.isFull()) {
+      return;
+    }
     for (Block b : dbs.keySet()) {
       b.decreaseY();
       if (b.x > world.screenPos.x && b.x < world.screenPos.x + width / SIZE + 1
@@ -35,6 +38,7 @@ class DeadBlocks {
           inventory.addItem(new Item(b, dbs.get(b)));
           dbs.remove(b);
         }
+        return;
       }
     }
   }

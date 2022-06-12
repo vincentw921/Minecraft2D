@@ -15,10 +15,12 @@ class Item {
   
   public void display(int x, int y, int size) {
     if (block == null) {
-      tool.display(x,y,size);
+      tool.display(x,y,size - 20);
     } else {
-      block.display(x,y,size);
-      text(amount, x + size - 10,y + size - 10);
+      block.display(x,y,size - 20);
+      textSize(size);
+      fill(0);
+      text(amount,x + size / 2, y + size - 25);
     }
   }
   public String toString() {
@@ -27,6 +29,10 @@ class Item {
     } else if (tool == null && block != null) {
       return "BLOCK";
     }
-    return "";
+    return "null";
   }
+  //with block.btype.toString()
+  //, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,
+  //with BLOCK
+  //, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,, null,
 }

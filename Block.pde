@@ -75,7 +75,7 @@ class Block {
     stroke(0);
     strokeWeight(1);
     fill(c);
-    square(x * size, y * size, size);
+    square(x, y, size);
   }
   
   public void display(int size) {

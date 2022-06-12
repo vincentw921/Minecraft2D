@@ -235,6 +235,12 @@ void mouseReleased() {
 
 void mouseWheel(MouseEvent event) {
   crafting.offset -= event.getCount();
+  if (crafting.offset < 0) {
+    crafting.offset = 0;
+  }
+  if (crafting.offset >= crafting.crafts.length - 4) {
+    crafting.offset = crafting.crafts.length - 5;
+  }
 }
 
 void exit() {

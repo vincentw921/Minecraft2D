@@ -1,7 +1,25 @@
 public enum Crafts {
   PLANK(Blocks.WOOD, 4, Blocks.TREE),
     STICKS(Tools.STICK, 4, Blocks.WOOD, Blocks.WOOD),
-    WOOD_PICKAXE(Tools.PICKAXE, Type.WOOD, new Blocks[] {Blocks.WOOD, Blocks.WOOD, Blocks.WOOD}, new Tools[] {Tools.STICK, Tools.STICK});
+    WOOD_PICKAXE(Tools.PICKAXE, Type.WOOD, new Blocks[] {Blocks.WOOD, Blocks.WOOD, Blocks.WOOD}, new Tools[] {Tools.STICK, Tools.STICK}),
+    WOOD_AXE(Tools.AXE, Type.WOOD, new Blocks[] {Blocks.WOOD, Blocks.WOOD, Blocks.WOOD}, new Tools[] {Tools.STICK, Tools.STICK}),
+    WOOD_SHOVEL(Tools.SHOVEL, Type.WOOD, new Blocks[] {Blocks.WOOD}, new Tools[] {Tools.STICK, Tools.STICK}),
+    WOOD_SWORD(Tools.SWORD, Type.WOOD, new Blocks[] {Blocks.WOOD, Blocks.WOOD}, new Tools[] {Tools.STICK}),
+    
+  STONE_PICKAXE(Tools.PICKAXE, Type.STONE, new Blocks[] {Blocks.STONE, Blocks.STONE, Blocks.STONE}, new Tools[] {Tools.STICK, Tools.STICK}),
+    STONE_AXE(Tools.AXE, Type.STONE, new Blocks[] {Blocks.STONE, Blocks.STONE, Blocks.STONE}, new Tools[] {Tools.STICK, Tools.STICK}),
+    STONE_SHOVEL(Tools.SHOVEL, Type.STONE, new Blocks[] {Blocks.STONE}, new Tools[] {Tools.STICK, Tools.STICK}),
+    STONE_SWORD(Tools.SWORD, Type.STONE, new Blocks[] {Blocks.STONE, Blocks.STONE}, new Tools[] {Tools.STICK}),
+    
+  IRON_PICKAXE(Tools.PICKAXE, Type.IRON, new Blocks[] {Blocks.IRON, Blocks.IRON, Blocks.IRON}, new Tools[] {Tools.STICK, Tools.STICK}),
+    IRON_AXE(Tools.AXE, Type.IRON, new Blocks[] {Blocks.IRON, Blocks.IRON, Blocks.IRON}, new Tools[] {Tools.STICK, Tools.STICK}),
+    IRON_SHOVEL(Tools.SHOVEL, Type.IRON, new Blocks[] {Blocks.IRON}, new Tools[] {Tools.STICK, Tools.STICK}),
+    IRON_SWORD(Tools.SWORD, Type.IRON, new Blocks[] {Blocks.IRON, Blocks.IRON}, new Tools[] {Tools.STICK}),
+    
+  DIAMOND_PICKAXE(Tools.PICKAXE, Type.DIAMOND, new Blocks[] {Blocks.DIAMOND, Blocks.DIAMOND, Blocks.DIAMOND}, new Tools[] {Tools.STICK, Tools.STICK}),
+    DIAMOND_AXE(Tools.AXE, Type.DIAMOND, new Blocks[] {Blocks.DIAMOND, Blocks.DIAMOND, Blocks.DIAMOND}, new Tools[] {Tools.STICK, Tools.STICK}),
+    DIAMOND_SHOVEL(Tools.SHOVEL, Type.DIAMOND, new Blocks[] {Blocks.DIAMOND}, new Tools[] {Tools.STICK, Tools.STICK}),
+    DIAMOND_SWORD(Tools.SWORD, Type.DIAMOND, new Blocks[] {Blocks.DIAMOND, Blocks.DIAMOND}, new Tools[] {Tools.STICK});
 
   Blocks[] blockRequirements;
   Tools[] toolRequirements;
@@ -48,9 +66,9 @@ class Crafting {
     fill(200);
     int name = 50;
     rect(this.screenOffset.x, this.screenOffset.y, CRAFTING_WIDTH, CRAFTING_HEIGHT, 23);
-    for (int i = 0; i < CRAFTING_HEIGHT; i += RECIPE_HEIGHT) {
-      if (i / RECIPE_HEIGHT >= crafts.length) {
-        return;
+    for (int i = 0; i < CRAFTING_HEIGHT - RECIPE_HEIGHT; i += RECIPE_HEIGHT) {
+      if (offset + i / RECIPE_HEIGHT >= crafts.length || offset + i / RECIPE_HEIGHT < 0) {
+        continue;
       }
       Crafts c = crafts[offset + i / RECIPE_HEIGHT];
       fill(name * i / RECIPE_HEIGHT + 50);
@@ -81,7 +99,7 @@ class Crafting {
       return;
     }
     int recipe = offset + int((mouseY - screenOffset.y) / RECIPE_HEIGHT);
-    if (recipe >= crafts.length) {
+    if (recipe >= crafts.length || recipe < 0) {
       return;
     }
     Crafts using = crafts[recipe];

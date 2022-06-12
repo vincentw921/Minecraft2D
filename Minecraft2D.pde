@@ -136,6 +136,10 @@ void keyPressed() {
   if (key == 'e') {
     isPressed[2] = !isPressed[2];
   }
+  
+  if (key == 'g') {
+    inventory.print();
+  }
 }
 
 void keyReleased() {

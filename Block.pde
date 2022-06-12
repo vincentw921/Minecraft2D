@@ -94,8 +94,8 @@ class Block {
       && y >= by - 1 && y <= by + SIZE + 1;
   }
   public boolean touching(float x, float y, float SIZE) {
-    float bx = x - world.screenPos.x + (int)world.screenPos.x;
-    float by = y - world.screenPos.y + (int)world.screenPos.y;
+    float bx = (this.x - world.screenPos.x) * 50 + 50 / 2 - 10;
+    float by = (this.y - world.screenPos.y) * 50;
     return x >= bx - 1 && x <= bx + SIZE + 1
       && y >= by - 1 && y <= by + SIZE + 1;
   }

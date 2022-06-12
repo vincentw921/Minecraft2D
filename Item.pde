@@ -21,4 +21,12 @@ class Item {
       text(amount, x + size - 10,y + size - 10);
     }
   }
+  public String toString() {
+    if (block == null && tool != null) {
+      return "TOOL";
+    } else if (tool == null && block != null) {
+      return "BLOCK";
+    }
+    return "";
+  }
 }

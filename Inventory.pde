@@ -76,4 +76,16 @@ class Inventory {
     inven[otherPos % cols][otherPos / cols] = inven[pos % cols][pos / cols];
     inven[pos % cols][pos / cols] = temp;
   }
+  
+  public void print() {
+    String s = "";
+    for (int i = 0; i < inven.length; i++) {
+      if (inven[i % cols][i / cols] == null) {
+        s += ", ,";
+        continue;
+      }
+      s += inven[i % cols][i / cols].toString() + ", ";
+    }
+    println(s);
+  }
 }

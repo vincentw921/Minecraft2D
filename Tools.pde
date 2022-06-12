@@ -40,7 +40,7 @@ class Tool {
   PImage image;
   public Tool(Tools tool, Type material) {
     this.ttype = tool;
-    this.tmaterial = material.
+    tmaterial = material;
     if (material == null) {
       material = Type.WOOD;
     }

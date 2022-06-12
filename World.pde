@@ -109,47 +109,50 @@ class World {
       return;
     }
     blocks[x][y].hit();
+    fill(color(127,255,0, 100));
+    noStroke();
+    square((x - screenPos.x) * 50, (y - screenPos.y) * 50, 50);
     if (blocks[x][y].health <= 0) {
       blocks[x][y].isDead = true;
       Block tmp = blocks[x][y];
       blocks[x][y] = null;
-      if (blocks[x][y].btype == Blocks.DIAMOND) {
+      if (tmp.btype == Blocks.DIAMOND) {
         if (inventory.inven[inHand] == null ||
-          inventory.inven[inHand].tool == null ||
-          inventory.inven[inHand].tool.ttype != PICKAXE ||
-          !(inventory.inven[inHand].tool.tmaterial == Type.IRON ||
-          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+          inventory.inven[0][inHand].tool == null ||
+          inventory.inven[0][inHand].tool.ttype != Tools.PICKAXE ||
+          !(inventory.inven[0][inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.DIAMOND)) {
           return;
         }
       }
-      if (blocks[x][y].btype == Blocks.STONE ||
-        blocks[x][y].btype == Blocks.GRANITE ||
-        blocks[x][y].btype == Blocks.DIORITE ||
-        blocks[x][y].btype == Blocks.COAL) {
-        if (inventory.inven[inHand] == null ||
-          inventory.inven[inHand].tool == null ||
-          inventory.inven[inHand].tool.ttype != PICKAXE) {
+      if (tmp.btype == Blocks.STONE ||
+        tmp.btype == Blocks.GRANITE ||
+        tmp.btype == Blocks.DIORITE ||
+        tmp.btype == Blocks.COAL) {
+        if (inventory.inven[0][inHand] == null ||
+          inventory.inven[0][inHand].tool == null ||
+          inventory.inven[0][inHand].tool.ttype != Tools.PICKAXE) {
           return;
         }
       }
-      if (blocks[x][y].btype == Blocks.GOLD) {
+      if (tmp.btype == Blocks.GOLD) {
         if (inventory.inven[inHand] == null ||
-          inventory.inven[inHand].tool == null ||
-          inventory.inven[inHand].tool.ttype != PICKAXE ||
-          !(inventory.inven[inHand].tool.tmaterial == Type.GOLD ||
-          inventory.inven[inHand].tool.tmaterial == Type.IRON ||
-          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+          inventory.inven[0][inHand].tool == null ||
+          inventory.inven[0][inHand].tool.ttype != Tools.PICKAXE ||
+          !(inventory.inven[0][inHand].tool.tmaterial == Type.GOLD ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.DIAMOND)) {
           return;
         }
       }
-      if (blocks[x][y].btype == Blocks.IRON) {
-        if (inventory.inven[inHand] == null ||
-          inventory.inven[inHand].tool == null ||
-          inventory.inven[inHand].tool.ttype != PICKAXE ||
-          !(inventory.inven[inHand].tool.tmaterial == Type.GOLD ||
-          inventory.inven[inHand].tool.tmaterial == Type.STONE ||
-          inventory.inven[inHand].tool.tmaterial == Type.IRON ||
-          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+      if (tmp.btype == Blocks.IRON) {
+        if (inventory.inven[0][inHand] == null ||
+          inventory.inven[0][inHand].tool == null ||
+          inventory.inven[0][inHand].tool.ttype != Tools.PICKAXE ||
+          !(inventory.inven[0][inHand].tool.tmaterial == Type.GOLD ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.STONE ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[0][inHand].tool.tmaterial == Type.DIAMOND)) {
           return;
         }
       }

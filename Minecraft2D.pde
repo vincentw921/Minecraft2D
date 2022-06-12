@@ -1,5 +1,3 @@
-import java.util.HashSet;
-
 DeadBlocks deadBlocks = new DeadBlocks();
 World world;
 Player player;

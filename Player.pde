@@ -123,8 +123,8 @@ class Player {
     stroke(color(100, 100, 100, 200));
     line(start.x, start.y, end.x, end.y);
     
-    if (inhand != null) {
-      inhand.regDisplay((int)pos.x + WIDTH / 2,(int)pos.y + HEIGHT / 2, 20);
+    if (inventory.inven[0][inHand] != null) {
+      inventory.inven[0][inHand].regDisplay((int)pos.x + WIDTH / 2,(int)pos.y + HEIGHT / 2, 20);
     }
   }
 }

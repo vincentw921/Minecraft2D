@@ -1,7 +1,10 @@
+import java.util.HashSet;
+
 DeadBlocks deadBlocks = new DeadBlocks();
 World world;
 Player player;
 Inventory inventory;
+Crafting crafting = new Crafting();
 
 boolean worldLoaded = false;
 boolean enterPressed = false;
@@ -12,9 +15,9 @@ boolean[] isPressed;
 boolean[] mouse;
 boolean autosave;
 
-Item inhand;
+int inHand;
 
-void setup() {  
+void setup() {
   size(1000, 1000);
   int buttonw = 800;
   int buttonh = 300;
@@ -58,7 +61,7 @@ void setup() {
       continue;
     }
     if (Btype.getString(i).equals("null")) {
-      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Tool(toolName.getString(i), health.getInt(i), damage.getInt(i)));
+      inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(new Tool(toolName.getString(i), health.getInt(i), damage.getInt(i)), amount.getInt(i));
     } else {
       Block temp = new Block(Blocks.valueOf(Btype.getString(i)));
       inventory.inven[i % inventory.rows][i / inventory.rows] = new Item(temp, amount.getInt(i));
@@ -66,7 +69,7 @@ void setup() {
   }
   isPressed = new boolean[5];
   mouse = new boolean[2];
-  inhand = inventory.inven[0][0];
+  inHand = 0;
   autosave = false;
   println("AUTOSAVE : " + (autosave ? "ON" : "OFF"));
 }
@@ -95,7 +98,7 @@ void draw() {
   deadBlocks.display();
   deadBlocks.checkPlayerTouching();
   player.display();
-  if(!isPressed[2]){
+  if (!isPressed[2]) {
     if (!(isPressed[0] && isPressed[1])) {
       if (isPressed[0] && player.notHasLeft(-0.01)) {
         player.moveX(-0.01);
@@ -110,7 +113,7 @@ void draw() {
       }
     }
   }
-  
+
   if (isPressed[2]) {
     inventory.display();
   } else {
@@ -118,12 +121,22 @@ void draw() {
     inventory.selected = new int[]{0, 0};
   }
 
+  if (isPressed[4] && !isPressed[2]) {
+    crafting.display();
+  }
   if (mouse[0] && !isPressed[2]) {
     world.checkHit();
   }
 
+  if (mouse[1] && !isPressed[2]) {
+    if (inventory.inven[0][inHand] != null) {
+      inventory.checkInHand();
+    }
+    world.placeBlock();
+  }
+
   player.run();
-  if(!autosave){
+  if (!autosave) {
     fill(255, 100, 50, 150);
   } else {
     fill(100, 255, 50, 150);
@@ -134,7 +147,6 @@ void draw() {
   fill(0);
   textSize(15);
   text("press space to toggle autosave", width - 100, height - 30);
-
 }
 
 void keyPressed() {
@@ -160,7 +172,7 @@ void keyPressed() {
   int intkey = (int)key;
   for (int i = 1; i <= inventory.inven[0].length; i++) {
     if (intkey == i + '0') {
-      inhand = inventory.inven[0][i-1];
+      inHand = i-1;
     }
   }
 }
@@ -178,17 +190,24 @@ void keyReleased() {
   if (key == 'g') {
     println(inventory.selected[0] + " " + inventory.selected[1] + " " + inventory.selecting);
   }
-  if(key == ' '){
+  if (key == ' ') {
     autosave = !autosave;
   }
-  if (key == 'e') {
+  if (key == 'e' && !isPressed[4]) {
     isPressed[2] = !isPressed[2];
+  }
+  if (key == 'c' && !isPressed[2]) {
+    isPressed[4] = !isPressed[4];
   }
 }
 
 void mousePressed() {
   if (!worldLoaded) {
     play.checkPress(mouseX, mouseY);
+    return;
+  }
+  if (isPressed[4]) {
+    crafting.checkRecipe();
     return;
   }
   if (mouseButton == LEFT) {
@@ -206,13 +225,20 @@ void mouseReleased() {
   if (mouseButton == RIGHT) {
     mouse[1] = false;
   }
-  if(isPressed[2]){
+  if (isPressed[2]) {
     inventory.setSelected(mouseX, mouseY);
+  }
+  if (isPressed[4]) {
+    //crafting.setSelected(mouseX, mouseY);
   }
 }
 
+void mouseWheel(MouseEvent event) {
+  crafting.offset -= event.getCount();
+}
+
 void exit() {
-  if(!autosave) return;
+  if (!autosave) return;
   Table table = new Table();
 
   table.addRow(new Float[] {world.screenPos.x, world.screenPos.y});
@@ -255,6 +281,7 @@ void exit() {
       toolName[i + j * inventory.inven.length] = inventory.inven[i][j].tool.name;
       health[i + j * inventory.inven.length] = Float.valueOf(inventory.inven[i][j].tool.health);
       damage[i + j * inventory.inven.length] = inventory.inven[i][j].tool.damage;
+      amount[i + j * inventory.inven.length] = inventory.inven[i][j].amount;
     }
   }
   table.addRow(toolName);

@@ -172,4 +172,22 @@ class World {
       }
     }
   }
+  
+  public void placeBlock() {
+    if (inventory.inven[0][inHand] == null || inventory.inven[0][inHand].block == null) {
+      return;
+    }
+    PVector location = new PVector(int(screenPos.x + mouseX / SIZE), int(screenPos.y + mouseY / SIZE));
+    if (blocks[(int)location.x][(int)location.y] != null) {
+      return;
+    }
+    if (blocks[(int)location.x + 1][(int)location.y] == null && 
+        blocks[(int)location.x - 1][(int)location.y] == null &&  
+        blocks[(int)location.x][(int)location.y - 1] == null && 
+        blocks[(int)location.x][(int)location.y + 1] == null) {
+      return;
+    }
+    blocks[(int)location.x][(int)location.y] = inventory.inven[0][inHand].block;
+    inventory.inven[0][inHand].amount--;
+  }
 }

@@ -33,12 +33,17 @@ class Tool {
   final PVector pos = new PVector(width / 2, height / 2 + 25 + 75);;
   String name;
   
+  Tools ttype;
   int damage;
   int health;
   PImage image;
   public Tool(Tools tool, Type material) {
+    this.ttype = tool;
+    if (material == null) {
+      material = Type.WOOD;
+    }
     this.name = tool.name + material.name;
-    this.image = loadImage(tool.name + material.name + ".png");
+    this.image = loadImage("images/" + tool.name + material.name + ".png");
     this.health = material.health;
     this.damage = material.damage;
   }
@@ -54,7 +59,7 @@ class Tool {
     image(image, pos.x, pos.y, IMAGE_SIZE, IMAGE_SIZE);
   }
   
-  public void display(int x, int y, int size) {
+  public void display(float x, float y, float size) {
     image(image, x, y, size, size);
   }
 }

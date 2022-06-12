@@ -29,12 +29,12 @@ class Inventory {
     fill(inside);
     stroke(border);
     strokeWeight(6);
-    
+
     rect(leftX, topY, invenWidth, invenHeight, 23);
 
     stroke(border);
     strokeWeight(3);
-    if(selecting){
+    if (selecting) {
       fill(color(50, 255, 50, 100));
       noStroke();
       //if(selected[0] == 0 && selected[1] == 0){
@@ -57,15 +57,39 @@ class Inventory {
     }
   }
 
+  public void checkInHand() {
+    if (inven[0][inHand].amount <= 0) {
+      inven[0][inHand] = null;
+    }
+  }
+
   public void addItem(Item item) {
-    int curItem; 
+    int curItem;
     for (curItem = 0; curItem < inven.length * inven[0].length; curItem++) {
       if (inven[curItem / cols][curItem % cols] == null) {
         break;
       }
     }
     if (item.block == null) {
-      inven[curItem / cols][curItem % cols] = item;
+      if (item.tool.ttype  == Tools.STICK) {
+        boolean hasblockalready = false;
+        for (int items = 0; items < curItem; items++) {
+          if (inven[items / cols][items % cols].tool != null
+            && inven[items / cols][items % cols].tool.ttype == item.tool.ttype) {
+            hasblockalready = true;
+            inven[items / cols][items % cols].amount += item.amount;
+            if (inven[items / cols][items % cols].amount > 64) {
+              inven[items / cols][items % cols].amount = 64;
+              addItem(new Item(inven[items / cols][items % cols].tool, inven[items / cols][items % cols].amount - 64));
+            }
+          }
+        }
+        if (!hasblockalready) {
+          inven[curItem / cols][curItem % cols] = item;
+        }
+      } else {
+        inven[curItem / cols][curItem % cols] = item;
+      }
     } else {
       boolean hasblockalready = false;
       for (int items = 0; items < curItem; items++) {
@@ -106,7 +130,7 @@ class Inventory {
     inven[otherPos % cols][otherPos / cols] = inven[pos % cols][pos / cols];
     inven[pos % cols][pos / cols] = temp;
   }
-  
+
   public String print() {
     String s = "";
     for (int i = 0; i < inven.length * inven[0].length; i++) {
@@ -121,33 +145,119 @@ class Inventory {
   }
 
   public void setSelected(int x, int y) {
-    if(selecting){
-      
+    if (selecting) {
+
       int[] temp = getCell(x, y);
       selecting = false;
-      if(temp[0] != -1 && temp[1] != -1){
+      if (temp[0] != -1 && temp[1] != -1) {
         //swap selected[0], selected[1] with cells at x, y
         Item tempItem = inven[selected[0]][selected[1]];
         inven[selected[0]][selected[1]] = inven[temp[0]][temp[1]];
         inven[temp[0]][temp[1]] = tempItem;
-      } 
+      }
       selected = new int[]{-1, -1};
-
     } else {
       selected = getCell(x, y);
-      if(selected[0] != -1 && selected[1] != -1){
+      if (selected[0] != -1 && selected[1] != -1) {
         selecting = true;
       }
     }
   }
   private int[] getCell(int x, int y) {
-    for(int row = 1; row <= rows; row++){
-      for(int col = 1; col <= cols; col++){
-        if(x < col * cellWidth + leftX && x > col * cellWidth + leftX - cellWidth && y < row * cellHeight + topY && y > row * cellHeight + topY - cellHeight){
+    for (int row = 1; row <= rows; row++) {
+      for (int col = 1; col <= cols; col++) {
+        if (x < col * cellWidth + leftX && x > col * cellWidth + leftX - cellWidth && y < row * cellHeight + topY && y > row * cellHeight + topY - cellHeight) {
           return new int[]{row - 1, col - 1};
         }
       }
     }
     return new int[]{-1, -1};
+  }
+
+  public boolean contains(Blocks b) {
+    for (int row = 0; row < rows; row++) {
+      for (int col = 0; col < cols; col++) {
+        if (inven[row][col] == null) {
+          continue;
+        }
+        if (inven[row][col].block == null) {
+          continue;
+        }
+        if (inven[row][col].block.btype == b) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean contains(Tools t) {
+    for (int row = 0; row < rows; row++) {
+      for (int col = 0; col < cols; col++) {
+        if (inven[row][col] == null) {
+          continue;
+        }
+        if (inven[row][col].tool == null) {
+          continue;
+        }
+        if (inven[row][col].tool.ttype == t) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public boolean remove(Blocks[] b, Tools[] t) {
+    Item [][] temp = new Item[inven.length][];
+    for (int i = 0; i < inven.length; i++)
+      temp[i] = inven[i].clone();
+
+    if (b != null) {
+      for (Blocks block : b) {
+        boolean has = false;
+        for (int row = 0; row < rows; row++) {
+          for (int col = 0; col < cols; col++) {
+            if (temp[row][col] == null || temp[row][col].block == null) {
+              continue;
+            }
+            if (temp[row][col].block.btype == block) {
+              temp[row][col].amount -= 1;
+              if ( temp[row][col].amount <= 0) {
+                temp[row][col] = null;
+              }
+              has = true;
+            }
+          }
+        }
+        if (!has) {
+          return false;
+        }
+      }
+    }
+    if (t != null) {
+      for (Tools tool : t) {
+        boolean has = false;
+        for (int row = 0; row < rows; row++) {
+          for (int col = 0; col < cols; col++) {
+            if (temp[row][col] == null || temp[row][col].tool == null) {
+              continue;
+            }
+            if (temp[row][col].tool.ttype == tool) {
+              temp[row][col].amount -= 1;
+              if ( temp[row][col].amount <= 0) {
+                temp[row][col] = null;
+              }
+              has = true;
+            }
+          }
+        }
+        if (!has) {
+          return false;
+        }
+      }
+    }
+    inven = temp;
+    return true;
   }
 }

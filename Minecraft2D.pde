@@ -232,7 +232,7 @@ void mouseReleased() {
 }
 
 void mouseWheel(MouseEvent event) {
-  crafting.offset -= event.getCount();
+  crafting.offset += event.getCount();
   if (crafting.offset < 0) {
     crafting.offset = 0;
   }

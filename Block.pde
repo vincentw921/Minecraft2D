@@ -1,18 +1,18 @@
 public enum Blocks {
-  TREE(new int[] {97, 59, 22}, 50),
-    LEAVES(new int[] {12, 174, 91}, 50),
-    WOOD(new int[] {150, 111, 51}, 50),
-    GRASS(new int[] {86, 125, 70}, 50),
-    DIRT(new int[] {155, 118, 83}, 50),
-    SAND(new int[] {225, 217, 199}, 50),
-    STONE(new int[] {136, 140, 141}, 50),
-    DIORITE(new int[] {157, 191, 177}, 50),
-    GRANITE(new int[] {164, 135, 126}, 50),
-    IRON(new int[] {161, 157, 148}, 50),
-    COAL(new int[] {43, 45, 47}, 50),
-    GOLD(new int[] {212, 175, 55}, 50),
-    DIAMOND(new int[] {185, 242, 255}, 50),
-    BEDROCK(new int[] {0, 0, 0}, 10000);
+  TREE(new int[] {97, 59, 22}, 250),
+    LEAVES(new int[] {12, 174, 91}, 150),
+    WOOD(new int[] {150, 111, 51}, 250),
+    GRASS(new int[] {86, 125, 70}, 150),
+    DIRT(new int[] {155, 118, 83}, 150),
+    SAND(new int[] {225, 217, 199}, 150),
+    STONE(new int[] {136, 140, 141}, 500),
+    DIORITE(new int[] {157, 191, 177}, 500),
+    GRANITE(new int[] {164, 135, 126}, 500),
+    IRON(new int[] {161, 157, 148}, 750),
+    COAL(new int[] {43, 45, 47}, 750),
+    GOLD(new int[] {212, 175, 55}, 750),
+    DIAMOND(new int[] {185, 242, 255}, 750),
+    BEDROCK(new int[] {0, 0, 0}, Integer.MAX_VALUE);
 
   int[] col;
   float health;

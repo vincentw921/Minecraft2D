@@ -12,9 +12,9 @@ public enum Tools {
 }
 
 public enum Type {
-  WOOD("wood", 10, 5),
-  STONE("stone", 10, 5),
-  IRON("iron", 10, 5),
+  WOOD("wood", 500, 5),
+  STONE("stone", 1000, 5),
+  IRON("iron", 10000, 5),
   GOLD("gold", 10, 5),
   DIAMOND("diamond", 10, 5);
   
@@ -34,11 +34,13 @@ class Tool {
   String name;
   
   Tools ttype;
+  Type tmaterial;
   int damage;
   int health;
   PImage image;
   public Tool(Tools tool, Type material) {
     this.ttype = tool;
+    this.tmaterial = material.
     if (material == null) {
       material = Type.WOOD;
     }

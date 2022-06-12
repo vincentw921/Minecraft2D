@@ -111,8 +111,49 @@ class World {
     blocks[x][y].hit();
     if (blocks[x][y].health <= 0) {
       blocks[x][y].isDead = true;
-      deadBlocks.addBlock(blocks[x][y]);
+      Block tmp = blocks[x][y];
       blocks[x][y] = null;
+      if (blocks[x][y].btype == Blocks.DIAMOND) {
+        if (inventory.inven[inHand] == null ||
+          inventory.inven[inHand].tool == null ||
+          inventory.inven[inHand].tool.ttype != PICKAXE ||
+          !(inventory.inven[inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+          return;
+        }
+      }
+      if (blocks[x][y].btype == Blocks.STONE ||
+        blocks[x][y].btype == Blocks.GRANITE ||
+        blocks[x][y].btype == Blocks.DIORITE ||
+        blocks[x][y].btype == Blocks.COAL) {
+        if (inventory.inven[inHand] == null ||
+          inventory.inven[inHand].tool == null ||
+          inventory.inven[inHand].tool.ttype != PICKAXE) {
+          return;
+        }
+      }
+      if (blocks[x][y].btype == Blocks.GOLD) {
+        if (inventory.inven[inHand] == null ||
+          inventory.inven[inHand].tool == null ||
+          inventory.inven[inHand].tool.ttype != PICKAXE ||
+          !(inventory.inven[inHand].tool.tmaterial == Type.GOLD ||
+          inventory.inven[inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+          return;
+        }
+      }
+      if (blocks[x][y].btype == Blocks.IRON) {
+        if (inventory.inven[inHand] == null ||
+          inventory.inven[inHand].tool == null ||
+          inventory.inven[inHand].tool.ttype != PICKAXE ||
+          !(inventory.inven[inHand].tool.tmaterial == Type.GOLD ||
+          inventory.inven[inHand].tool.tmaterial == Type.STONE ||
+          inventory.inven[inHand].tool.tmaterial == Type.IRON ||
+          inventory.inven[inHand].tool.tmaterial == Type.DIAMOND)) {
+          return;
+        }
+      }
+      deadBlocks.addBlock(tmp);
     }
   }
 
@@ -172,7 +213,7 @@ class World {
       }
     }
   }
-  
+
   public void placeBlock() {
     if (inventory.inven[0][inHand] == null || inventory.inven[0][inHand].block == null) {
       return;
@@ -181,10 +222,10 @@ class World {
     if (blocks[(int)location.x][(int)location.y] != null) {
       return;
     }
-    if (blocks[(int)location.x + 1][(int)location.y] == null && 
-        blocks[(int)location.x - 1][(int)location.y] == null &&  
-        blocks[(int)location.x][(int)location.y - 1] == null && 
-        blocks[(int)location.x][(int)location.y + 1] == null) {
+    if (blocks[(int)location.x + 1][(int)location.y] == null &&
+      blocks[(int)location.x - 1][(int)location.y] == null &&
+      blocks[(int)location.x][(int)location.y - 1] == null &&
+      blocks[(int)location.x][(int)location.y + 1] == null) {
       return;
     }
     blocks[(int)location.x][(int)location.y] = inventory.inven[0][inHand].block;

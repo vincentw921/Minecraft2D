@@ -23,6 +23,17 @@ class Item {
       text(amount,x + size / 2, y + size - 25);
     }
   }
+  
+  public void regDisplay(int x, int y, int size) {
+    if (block == null) {
+      tool.display(x,y,size);
+    } else {
+      block.display(x,y,size);
+      textSize(size);
+      fill(0);
+      text(amount,x + size / 2, y + size - 5);
+    }
+  }
   public String toString() {
     if (block == null && tool != null) {
       return "TOOL";

@@ -122,5 +122,9 @@ class Player {
     strokeWeight(20);
     stroke(color(100, 100, 100, 200));
     line(start.x, start.y, end.x, end.y);
+    
+    if (inhand != null) {
+      inhand.regDisplay((int)pos.x + WIDTH / 2,(int)pos.y + HEIGHT / 2, 20);
+    }
   }
 }

@@ -12,6 +12,8 @@ boolean[] isPressed;
 boolean[] mouse;
 boolean autosave;
 
+Item inhand;
+
 void setup() {  
   size(1000, 1000);
   int buttonw = 800;
@@ -64,6 +66,7 @@ void setup() {
   }
   isPressed = new boolean[5];
   mouse = new boolean[2];
+  inhand = inventory.inven[0][0];
   autosave = false;
   println("AUTOSAVE : " + (autosave ? "ON" : "OFF"));
 }
@@ -154,9 +157,12 @@ void keyPressed() {
   if (key == 'w') {
     isPressed[3] = true;
   }
-  
-  
-  
+  int intkey = (int)key;
+  for (int i = 1; i <= inventory.inven[0].length; i++) {
+    if (intkey == i + '0') {
+      inhand = inventory.inven[0][i-1];
+    }
+  }
 }
 
 void keyReleased() {
